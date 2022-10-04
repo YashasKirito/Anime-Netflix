@@ -54,7 +54,7 @@ const HomePage: NextPage = () => {
               "h-full w-full transition-opacity ease-in duration-500 object-cover",
               { "opacity-0": playing }
             )}
-            src={"/covers/edgeRunner_cover-v2.jpeg"}
+            src={"/covers/EdgeRunner_cover.jpg"}
             alt="cover"
           />
           <div className="main | absolute pl-20 bottom-0 h-full w-full bg-gradient-to-tr from-black flex flex-col-reverse">
@@ -76,7 +76,12 @@ const HomePage: NextPage = () => {
                   <BsPlusLg className="w-5 h-5" /> My Lists
                 </Button>
               </div>
-              <p className={cn("py-8 w-1/2 text-sm text-slate-300 transition-opacity", {'opacity-0': playing})}>
+              <p
+                className={cn(
+                  "py-8 w-1/2 text-sm text-slate-300 transition-opacity",
+                  { "opacity-0": playing }
+                )}
+              >
                 CYBERPUNK: EDGERUNNERS tells a standalone, 10-episode story
                 about a street kid trying to survive in a technology and body
                 modification-obsessed city of the future. Having everything to
