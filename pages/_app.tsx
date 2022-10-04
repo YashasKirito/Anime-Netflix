@@ -1,5 +1,4 @@
 import "../styles/globals.css";
-import "@vime/core/themes/default.css";
 
 import type { AppProps } from "next/app";
 import Layout from "organisms/Layout";

@@ -23,7 +23,7 @@ const Header = () => {
         {LINKS.map((link) => (
           <li
             key={link.link}
-            className="font-light hover:font-semibold hover:underline underline-offset-4 transition"
+            className="whitespace-nowrap font-light hover:font-semibold hover:underline underline-offset-4 transition"
           >
             <Link href={link.href}>{link.link}</Link>
           </li>
