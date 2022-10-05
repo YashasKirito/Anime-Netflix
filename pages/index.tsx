@@ -48,7 +48,6 @@ const HomePage: NextPage = ({
 
   const HandleTransition = (state: OnProgressProps) => {
     const { playedSeconds } = state;
-    console.log(playedSeconds);
     if (playedSeconds > 30) {
       setPlaying(false);
     }
@@ -65,7 +64,6 @@ const HomePage: NextPage = ({
           width="100%"
           height="100%"
           volume={0.6}
-          onEnded={() => console.log("Video Ended")}
           onProgress={HandleTransition}
         />
         <div className="absolute w-full h-full">

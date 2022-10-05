@@ -10,11 +10,13 @@ import DOMPurify from "isomorphic-dompurify";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
+import Spinner from "@atoms/Spinner";
 
-const AnimePage: NextPage = ({
-  animeData,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const AnimePage: NextPage = ({}) => {
+  const [animeData, setAnimeData] = useState<any>(null);
+
   const router = useRouter();
+
   // Episodes Pagination
   // We start with an empty list of items.
   const [currentItems, setCurrentItems] = useState(null);
@@ -26,22 +28,39 @@ const AnimePage: NextPage = ({
   const itemsPerPage = 10;
 
   useEffect(() => {
+    const getAnime = async () => {
+      const res = await axios.get(
+        process.env.NEXT_PUBLIC_BASE_URL + urls.getAnime + router.query?.id ||
+          ""
+      );
+      setAnimeData(res.data);
+    };
+    getAnime();
+  }, [router.query.id]);
+
+  useEffect(() => {
     // Fetch items from another resources.
-    const endOffset = itemOffset + itemsPerPage;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    setCurrentItems(animeData.episodes.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(animeData.episodes.length / itemsPerPage));
-  }, [itemOffset, itemsPerPage, animeData.episodes]);
+    if (animeData) {
+      const endOffset = itemOffset + itemsPerPage;
+      setCurrentItems(animeData.episodes.slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(animeData.episodes.length / itemsPerPage));
+    }
+  }, [itemOffset, itemsPerPage, animeData]);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event: { selected: number }) => {
     const newOffset =
       (event.selected * itemsPerPage) % animeData.episodes.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
+
+  if (!animeData) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <Spinner />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col">
@@ -169,17 +188,6 @@ const AnimePage: NextPage = ({
       </section>
     </div>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await axios.get(
-    process.env.BASE_URL + urls.getAnime + context.params?.id || ""
-  );
-  return {
-    props: {
-      animeData: res.data,
-    },
-  };
 };
 
 export default AnimePage;
