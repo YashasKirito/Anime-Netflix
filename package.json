@@ -11,6 +11,8 @@
   "dependencies": {
     "axios": "^1.0.0",
     "classnames": "^2.3.2",
+    "dompurify": "^2.4.0",
+    "isomorphic-dompurify": "^0.22.0",
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -19,6 +21,7 @@
     "react-player": "^2.11.0"
   },
   "devDependencies": {
+    "@types/dompurify": "^2.3.4",
     "@types/node": "18.7.23",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",

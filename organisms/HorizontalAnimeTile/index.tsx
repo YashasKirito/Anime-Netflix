@@ -1,5 +1,5 @@
 import AnimeTile from "molecules/AnimeTile";
-import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
+import { ScrollMenu } from "react-horizontal-scrolling-menu";
 
 interface IHorizontalAnimeTile {
   data: object[];

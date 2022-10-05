@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import type { NextPage } from "next";
 import axios from "axios";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { GetStaticProps, InferGetStaticPropsType } from "next";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { GoUnmute, GoMute } from "react-icons/go";
@@ -20,13 +20,13 @@ const HomePage: NextPage = ({
   home,
   recentEpisodes,
   trending,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      // setPlaying(true);
+      setPlaying(true);
     }, 5000);
 
     return () => {
@@ -119,7 +119,7 @@ const HomePage: NextPage = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async () => {
   const HOME_TILES = [
     {
       name: "Edge runners",
@@ -158,7 +158,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       home: HOME_TILES[Math.floor(Math.random() * HOME_TILES.length)],
       recentEpisodes: recent.data.results,
       trending: trending.data.results,
-    }, // will be passed to the page component as props
+    },
+    revalidate: 120,
   };
 };
 
