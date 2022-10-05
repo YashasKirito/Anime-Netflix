@@ -28,6 +28,15 @@ const HomePage: NextPage = ({
   const router = useRouter();
 
   useEffect(() => {
+    const interaction = localStorage.getItem("userInteraction");
+    if (interaction) {
+      setMuted(false);
+    } else {
+      setMuted(true);
+    }
+  }, []);
+
+  useEffect(() => {
     const timeout = setTimeout(() => {
       setPlaying(true);
     }, 5000);
@@ -55,7 +64,7 @@ const HomePage: NextPage = ({
           muted={muted}
           width="100%"
           height="100%"
-          volume={0.1}
+          volume={0.6}
           onEnded={() => console.log("Video Ended")}
           onProgress={HandleTransition}
         />
@@ -81,9 +90,7 @@ const HomePage: NextPage = ({
               <div className="flex gap-4 mt-10">
                 <Button
                   type="primary"
-                  onClick={() =>
-                    router.push(`/anime/watch/${home.episode_id}`)
-                  }
+                  onClick={() => router.push(`/anime/watch/${home.episode_id}`)}
                 >
                   <FaPlay className="w-5 h-5" /> Play
                 </Button>
