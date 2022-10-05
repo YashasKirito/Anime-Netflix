@@ -23,14 +23,17 @@ const Player: NextPage = () => {
             urls.watch +
             router.query?.watchId || ""
         );
+        console.log("got data", res.data);
         setStreamData(res.data);
         setError(null);
       } catch (e) {
+        console.log("error");
         setError("Some error");
+        setStreamData(null);
       }
     };
     getStream();
-  }, [router.query.watchId]);
+  }, [router.query]);
 
   if (error) {
     return (
@@ -50,16 +53,15 @@ const Player: NextPage = () => {
     );
   }
 
-  let stream = streamData.sources.find((st: any) => st.quality === "default");
-
-  if (!stream) {
-    stream = streamData.sources[0];
-  }
-
-  return (
+  return streamData ? (
     <div className="h-screen w-screen">
       <ReactPlayer
-        url={stream.url}
+        url={
+          (
+            streamData.sources.find((st: any) => st.quality === "default") ||
+            streamData.sources[0]
+          ).url
+        }
         className="react-player"
         playing
         width="100%"
@@ -70,7 +72,7 @@ const Player: NextPage = () => {
         // onProgress={HandleTransition}
       />
     </div>
-  );
+  ) : null;
 };
 
 export default Player;

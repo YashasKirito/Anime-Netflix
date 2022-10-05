@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextPage } from "next";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import axios from "axios";
 import { urls } from "service/urls";
 import Button from "@atoms/Button";
@@ -14,6 +13,7 @@ import Spinner from "@atoms/Spinner";
 
 const AnimePage: NextPage = ({}) => {
   const [animeData, setAnimeData] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -29,11 +29,16 @@ const AnimePage: NextPage = ({}) => {
 
   useEffect(() => {
     const getAnime = async () => {
-      const res = await axios.get(
-        process.env.NEXT_PUBLIC_BASE_URL + urls.getAnime + router.query?.id ||
-          ""
-      );
-      setAnimeData(res.data);
+      try {
+        const res = await axios.get(
+          process.env.NEXT_PUBLIC_BASE_URL + urls.getAnime + router.query?.id ||
+            ""
+        );
+        setAnimeData(res.data);
+        setError(null);
+      } catch {
+        setError("Some error");
+      }
     };
     getAnime();
   }, [router.query.id]);
@@ -53,6 +58,16 @@ const AnimePage: NextPage = ({}) => {
       (event.selected * itemsPerPage) % animeData.episodes.length;
     setItemOffset(newOffset);
   };
+
+  if (error) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <h1 className="font-bold text-4xl">
+          Sorry! couldn&apos;t get the anime details, please try again later!
+        </h1>
+      </div>
+    );
+  }
 
   if (!animeData) {
     return (
