@@ -5,12 +5,44 @@ import axios from "axios";
 import { urls } from "service/urls";
 import Button from "@atoms/Button";
 import { FaPlay } from "react-icons/fa";
-import { BsPlusLg } from "react-icons/bs";
+import { BsChevronLeft, BsPlusLg, BsChevronRight } from "react-icons/bs";
 import DOMPurify from "isomorphic-dompurify";
+import { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
+import { useRouter } from "next/router";
 
 const AnimePage: NextPage = ({
   animeData,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const router = useRouter();
+  // Episodes Pagination
+  // We start with an empty list of items.
+  const [currentItems, setCurrentItems] = useState(null);
+  const [pageCount, setPageCount] = useState(0);
+  // Here we use item offsets; we could also use page offsets
+  // following the API or data you're working with.
+  const [itemOffset, setItemOffset] = useState(0);
+
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    // Fetch items from another resources.
+    const endOffset = itemOffset + itemsPerPage;
+    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+    setCurrentItems(animeData.episodes.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(animeData.episodes.length / itemsPerPage));
+  }, [itemOffset, itemsPerPage, animeData.episodes]);
+
+  // Invoke when user click to request another page.
+  const handlePageClick = (event: { selected: number }) => {
+    const newOffset =
+      (event.selected * itemsPerPage) % animeData.episodes.length;
+    console.log(
+      `User requested page number ${event.selected}, which is offset ${newOffset}`
+    );
+    setItemOffset(newOffset);
+  };
+
   return (
     <div className="flex flex-col">
       <div className="relative">
@@ -32,7 +64,12 @@ const AnimePage: NextPage = ({
           <div className="details flex flex-col justify-end gap-3">
             <p className="font-bold text-4xl">{animeData.title.romaji}</p>
             <div className="actions | flex gap-2">
-              <Button type="primary" onClick={() => console.log("Click")}>
+              <Button
+                type="primary"
+                onClick={() =>
+                  router.push(`/anime/watch/${animeData.episodes[0].id}`)
+                }
+              >
                 <FaPlay className="w-5 h-5" /> Play
               </Button>
 
@@ -87,7 +124,48 @@ const AnimePage: NextPage = ({
           </div>
         </section>
 
-        {JSON.stringify(animeData)}
+        <section className="flex flex-col gap-4">
+          <div className="flex py-5 items-center">
+            <h2 className="flex-grow font-semibold text-2xl">Episodes</h2>
+            <div className="react-paginate | flex-shrink-0">
+              <ReactPaginate
+                breakLabel="..."
+                nextLabel={<BsChevronRight />}
+                onPageChange={handlePageClick}
+                pageRangeDisplayed={5}
+                pageCount={pageCount}
+                previousLabel={<BsChevronLeft />}
+                // renderOnZeroPageCount={null}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col">
+            {(currentItems || []).map((ep: any) => {
+              return (
+                <div
+                  onClick={(e) => router.push(`/anime/watch/${ep.id}`)}
+                  key={ep.id}
+                  className="flex items-center gap-6 p-4 cursor-pointer rounded-md hover:bg-gray-700"
+                >
+                  <span className="text-2xl">{ep.number}</span>
+                  <img
+                    className="w-40 aspect-video object-cover flex-shrink-0"
+                    src={ep.image}
+                    alt="thumb"
+                  />
+                  <div className="flex flex-col">
+                    <h4 className="text-lg font-bold">
+                      {ep.title || ep.id.replaceAll("-", " ")}
+                    </h4>
+                    <p className="text-sm text-gray-400">{ep.description}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* {JSON.stringify(animeData)} */}
       </section>
     </div>
   );

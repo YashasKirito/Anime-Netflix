@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { RiSearchLine } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa";
+import { BsArrowLeft } from "react-icons/bs";
+import { useRouter } from "next/router";
 
 const LINKS = [
   { link: "Home", href: "/" },
@@ -10,7 +12,22 @@ const LINKS = [
   { link: "My List", href: "/mylist" },
 ];
 
-const Header = () => {
+interface IHeader {
+  isWatchRoute?: boolean;
+}
+
+const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
+  const router = useRouter();
+  if (isWatchRoute) { 
+    return (
+      <header className="absolute z-50 p-5 px-10">
+        <button onClick={() => router.back()}>
+          <BsArrowLeft className="w-10 h-10" />
+        </button>
+      </header>
+    );
+  }
+
   return (
     <header className="flex p-4 lg:px-36 md:px-20  sticky items-center top-0 z-10 bg-gradient-to-b from-black w-full">
       <Link href={"/"}>

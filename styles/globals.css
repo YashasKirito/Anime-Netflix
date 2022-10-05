@@ -9,14 +9,13 @@
 }
 
 .react-horizontal-scrolling-menu--scroll-container {
-  gap: .25rem;
+  gap: 0.25rem;
 }
 
 .react-horizontal-scrolling-menu--scroll-container {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
-
 
 html,
 body {
@@ -41,4 +40,25 @@ a {
     color: white;
     background: black;
   }
+}
+
+.react-paginate ul {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  align-items: center;
+}
+
+.react-paginate ul li {
+  padding: 0.25rem 0.5rem;
+}
+
+.react-paginate ul li.selected {
+  border: 1px solid white;
+  border-radius: 0.25rem;
+}
+
+.react-paginate ul .previous.disabled,
+.react-paginate ul .next.disabled {
+  color: gray;
 }

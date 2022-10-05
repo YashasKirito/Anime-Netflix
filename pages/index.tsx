@@ -12,6 +12,7 @@ import { FaPlay } from "react-icons/fa";
 import { BsPlusLg } from "react-icons/bs";
 import { urls } from "service/urls";
 import HorizontalAnimeTile from "organisms/HorizontalAnimeTile";
+import { useRouter } from "next/router";
 const ReactPlayer = dynamic(() => import("react-player"), {
   ssr: false,
 });
@@ -23,6 +24,8 @@ const HomePage: NextPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -76,7 +79,12 @@ const HomePage: NextPage = ({
                 alt="Title"
               />
               <div className="flex gap-4 mt-10">
-                <Button type="primary" onClick={() => console.log("Click")}>
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    router.push(`/anime/watch/${home.episode_id}`)
+                  }
+                >
                   <FaPlay className="w-5 h-5" /> Play
                 </Button>
 
@@ -128,6 +136,7 @@ export const getStaticProps: GetStaticProps = async () => {
       youtube_url: "https://www.youtube.com/watch?v=JtqIas3bYhg",
       cover_url: "/covers/EdgeRunner_cover.jpg",
       logo_url: "/logos/Cyberpunk_Edgerunners_logo.png",
+      episode_id: "cyberpunk-edgerunners-episode-1",
     },
     {
       name: "Yofukashi no Uta",
@@ -136,6 +145,7 @@ export const getStaticProps: GetStaticProps = async () => {
       youtube_url: "https://www.youtube.com/watch?v=ukO-ZdWS3j8",
       cover_url: "/covers/call-of-the-night-cover.jpg",
       logo_url: "/logos/Call_of_the_night_logo.png",
+      episode_id: "yofukashi-no-uta-episode-1",
     },
     {
       name: "Summer Time Render",
@@ -145,6 +155,7 @@ export const getStaticProps: GetStaticProps = async () => {
       cover_url: "https://images6.alphacoders.com/118/1182991.jpg",
       logo_url:
         "https://upload.wikimedia.org/wikipedia/commons/6/69/Summer_Time_Rendering_logo.png",
+      episode_id: "summertime-render-episode-1",
     },
   ];
 
