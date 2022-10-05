@@ -16,7 +16,9 @@
     "baseUrl": ".",
     "incremental": true,
     "paths": {
-      "@atoms/*": ["atoms/*"]
+      "@atoms/*": ["atoms/*"],
+      "@organisms/*": ["organisms/*"],
+      "@molecules/*": ["molecules/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

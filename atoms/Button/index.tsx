@@ -10,7 +10,7 @@ const Button: React.FC<IButton> = ({ children, onClick, type }) => {
   return (
     <button
       className={cn(
-        "p-2 px-6 flex items-center justify-center w-fit rounded-md gap-2",
+        "p-2 px-6 flex items-center font-bold justify-center w-fit rounded-md gap-2",
         {
           "text-black": type === "primary",
           "text-white": type === "secondary",

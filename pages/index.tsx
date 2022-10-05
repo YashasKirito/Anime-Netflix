@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import type { NextPage } from "next";
+import axios from "axios";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
@@ -9,19 +10,23 @@ import { OnProgressProps } from "react-player/base";
 import Button from "@atoms/Button";
 import { FaPlay } from "react-icons/fa";
 import { BsPlusLg } from "react-icons/bs";
+import { urls } from "service/urls";
+import HorizontalAnimeTile from "organisms/HorizontalAnimeTile";
 const ReactPlayer = dynamic(() => import("react-player"), {
   ssr: false,
 });
 
-const HomePage: NextPage = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
-) => {
+const HomePage: NextPage = ({
+  home,
+  recentEpisodes,
+  trending,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setPlaying(true);
+      // setPlaying(true);
     }, 5000);
 
     return () => {
@@ -41,7 +46,7 @@ const HomePage: NextPage = (
     <div className="flex flex-col">
       <div className="h-[80vh] relative w-full flex">
         <ReactPlayer
-          url={props.youtube_url}
+          url={home.youtube_url}
           className="react-player"
           playing={playing}
           muted={muted}
@@ -57,7 +62,7 @@ const HomePage: NextPage = (
               "h-full w-full transition-opacity ease-in duration-500 object-cover",
               { "opacity-0": playing }
             )}
-            src={props.cover_url}
+            src={home.cover_url}
             alt="cover"
           />
           <div className="main | absolute pl-20 bottom-0 h-full w-full bg-gradient-to-tr from-black  flex flex-col-reverse">
@@ -67,7 +72,7 @@ const HomePage: NextPage = (
                   "h-20 w-fit scale-150 duration-1000 -translate-y-10 origin-bottom-left transition-transform",
                   { "scale-100 translate-y-0": playing }
                 )}
-                src={props.logo_url}
+                src={home.logo_url}
                 alt="Title"
               />
               <div className="flex gap-4 mt-10">
@@ -85,7 +90,7 @@ const HomePage: NextPage = (
                   { "opacity-0": playing }
                 )}
               >
-                {props.description}
+                {home.description}
               </p>
             </div>
           </div>
@@ -100,6 +105,16 @@ const HomePage: NextPage = (
           </div>
         </div>
       </div>
+
+      <section className="pl-20 mt-2">
+        <h2 className="text-xl">New Releases</h2>
+        <HorizontalAnimeTile data={recentEpisodes} />
+      </section>
+
+      <section className="pl-20 mt-10">
+        <h2 className="text-xl">Trending Anime</h2>
+        <HorizontalAnimeTile data={trending} />
+      </section>
     </div>
   );
 };
@@ -132,8 +147,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         "https://upload.wikimedia.org/wikipedia/commons/6/69/Summer_Time_Rendering_logo.png",
     },
   ];
+
+  // Fetch Recent releases
+  const recent = await axios.get(
+    `${process.env.BASE_URL + urls.recentEpisodes}`
+  );
+  const trending = await axios.get(`${process.env.BASE_URL + urls.trending}`);
   return {
-    props: HOME_TILES[Math.floor(Math.random() * HOME_TILES.length)], // will be passed to the page component as props
+    props: {
+      home: HOME_TILES[Math.floor(Math.random() * HOME_TILES.length)],
+      recentEpisodes: recent.data.results,
+      trending: trending.data.results,
+    }, // will be passed to the page component as props
   };
 };
 
