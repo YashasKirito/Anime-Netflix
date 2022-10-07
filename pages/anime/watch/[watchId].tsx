@@ -1,5 +1,10 @@
-import { NextPage } from "next";
-import React, { useEffect, useState } from "react";
+import {
+  InferGetStaticPropsType,
+  NextPage,
+  GetStaticProps,
+  GetStaticPaths,
+} from "next";
+import React, { useState } from "react";
 import { urls } from "service/urls";
 import axios from "axios";
 import dynamic from "next/dynamic";
@@ -10,30 +15,11 @@ const ReactPlayer = dynamic(() => import("react-player"), {
   ssr: false,
 });
 
-const Player: NextPage = () => {
+const Player: NextPage = ({
+  streamData,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
-  const [streamData, setStreamData] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getStream = async () => {
-      try {
-        const res = await axios.get(
-          process.env.NEXT_PUBLIC_BASE_URL +
-            urls.watch +
-            router.query?.watchId || ""
-        );
-        console.log("got data", res.data);
-        setStreamData(res.data);
-        setError(null);
-      } catch (e) {
-        console.log("error");
-        setError("Some error");
-        setStreamData(null);
-      }
-    };
-    getStream();
-  }, [router.query]);
 
   if (error) {
     return (
@@ -45,7 +31,7 @@ const Player: NextPage = () => {
     );
   }
 
-  if (!streamData) {
+  if (router.isFallback) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Spinner />
@@ -76,3 +62,22 @@ const Player: NextPage = () => {
 };
 
 export default Player;
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: true,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const res = await axios.get(
+    process.env.BASE_URL + urls.watch + context.params?.watchId || ""
+  );
+  return {
+    props: {
+      streamData: res.data,
+    },
+    revalidate: 600,
+  };
+};

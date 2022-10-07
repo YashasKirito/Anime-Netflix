@@ -1,5 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { NextPage } from "next";
+import {
+  InferGetStaticPropsType,
+  NextPage,
+  GetStaticProps,
+  GetStaticPaths,
+} from "next";
 import axios from "axios";
 import { urls } from "service/urls";
 import Button from "@atoms/Button";
@@ -10,11 +15,11 @@ import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/router";
 import Spinner from "@atoms/Spinner";
+import Link from "next/link";
 
-const AnimePage: NextPage = ({}) => {
-  const [animeData, setAnimeData] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
-
+const AnimePage: NextPage = ({
+  animeData,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
 
   // Episodes Pagination
@@ -28,28 +33,10 @@ const AnimePage: NextPage = ({}) => {
   const itemsPerPage = 10;
 
   useEffect(() => {
-    const getAnime = async () => {
-      try {
-        const res = await axios.get(
-          process.env.NEXT_PUBLIC_BASE_URL + urls.getAnime + router.query?.id ||
-            ""
-        );
-        setAnimeData(res.data);
-        setError(null);
-      } catch {
-        setError("Some error");
-      }
-    };
-    getAnime();
-  }, [router.query.id]);
-
-  useEffect(() => {
     // Fetch items from another resources.
-    if (animeData) {
-      const endOffset = itemOffset + itemsPerPage;
-      setCurrentItems(animeData.episodes.slice(itemOffset, endOffset));
-      setPageCount(Math.ceil(animeData.episodes.length / itemsPerPage));
-    }
+    const endOffset = itemOffset + itemsPerPage;
+    setCurrentItems(animeData.episodes.slice(itemOffset, endOffset));
+    setPageCount(Math.ceil(animeData.episodes.length / itemsPerPage));
   }, [itemOffset, itemsPerPage, animeData]);
 
   // Invoke when user click to request another page.
@@ -59,17 +46,17 @@ const AnimePage: NextPage = ({}) => {
     setItemOffset(newOffset);
   };
 
-  if (error) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <h1 className="font-bold text-4xl">
-          Sorry! couldn&apos;t get the anime details, please try again later!
-        </h1>
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="flex h-screen items-center justify-center">
+  //       <h1 className="font-bold text-4xl">
+  //         Sorry! couldn&apos;t get the anime details, please try again later!
+  //       </h1>
+  //     </div>
+  //   );
+  // }
 
-  if (!animeData) {
+  if (router.isFallback) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Spinner />
@@ -176,33 +163,52 @@ const AnimePage: NextPage = ({}) => {
           <div className="flex flex-col">
             {(currentItems || []).map((ep: any) => {
               return (
-                <div
-                  onClick={(e) => router.push(`/anime/watch/${ep.id}`)}
-                  key={ep.id}
-                  className="flex items-center gap-6 p-4 cursor-pointer rounded-md hover:bg-gray-700"
-                >
-                  <span className="text-2xl">{ep.number}</span>
-                  <img
-                    className="w-40 aspect-video object-cover flex-shrink-0"
-                    src={ep.image}
-                    alt="thumb"
-                  />
-                  <div className="flex flex-col">
-                    <h4 className="text-lg font-bold">
-                      {ep.title || ep.id.replaceAll("-", " ")}
-                    </h4>
-                    <p className="text-sm text-gray-400">{ep.description}</p>
-                  </div>
-                </div>
+                <Link key={ep.id} href={`/anime/watch/${ep.id}`}>
+                  <a className="flex items-center gap-6 p-4 cursor-pointer rounded-md hover:bg-gray-700">
+                    <span className="text-2xl">{ep.number}</span>
+                    <img
+                      className="w-40 aspect-video object-cover flex-shrink-0"
+                      src={ep.image}
+                      alt="thumb"
+                    />
+                    <div className="flex flex-col">
+                      <h4 className="text-lg font-bold">
+                        {ep.title || ep.id.replaceAll("-", " ")}
+                      </h4>
+                      <p className="text-sm text-gray-400">{ep.description}</p>
+                    </div>
+                  </a>
+                </Link>
               );
             })}
           </div>
         </section>
-
-        {/* {JSON.stringify(animeData)} */}
       </section>
     </div>
   );
 };
 
 export default AnimePage;
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [
+      {
+        params: { id: "144533" },
+      },
+    ],
+    fallback: true,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const res = await axios.get(
+    process.env.BASE_URL + urls.getAnime + context.params?.id || ""
+  );
+  return {
+    props: {
+      animeData: res.data,
+    },
+    revalidate: 120,
+  };
+};
