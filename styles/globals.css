@@ -64,3 +64,20 @@ a {
 .react-paginate ul .next.disabled {
   color: gray;
 }
+
+/* Tabs styles */
+
+.react-tabs__tab--selected {
+  background: black !important;
+  border-color: white !important;
+  border-bottom-color: black !important;
+  color: white !important;
+}
+
+.react-tabs__tab {
+  /* border-bottom: unset !important; */
+}
+
+.react-tabs__tab:focus:after {
+  height: 0px !important;
+}

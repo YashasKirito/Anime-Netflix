@@ -17,11 +17,13 @@ import { useRouter } from "next/router";
 import Spinner from "@atoms/Spinner";
 import Link from "next/link";
 
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import HorizontalAnimeTile from "@organisms/HorizontalAnimeTile";
+
 const AnimePage: NextPage = ({
   animeData,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
-
   // Episodes Pagination
   // We start with an empty list of items.
   const [currentItems, setCurrentItems] = useState(null);
@@ -29,15 +31,22 @@ const AnimePage: NextPage = ({
   // Here we use item offsets; we could also use page offsets
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
+  const [tabIndex, setTabIndex] = useState(0);
 
   const itemsPerPage = 10;
 
   useEffect(() => {
     // Fetch items from another resources.
-    const endOffset = itemOffset + itemsPerPage;
-    setCurrentItems(animeData.episodes.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(animeData.episodes.length / itemsPerPage));
-  }, [itemOffset, itemsPerPage, animeData]);
+    if (animeData && animeData.type === "NOVEL") {
+      router.replace(`/anime/${animeData.id}`, `/novel/${animeData.id}`);
+    }
+    setTabIndex(0);
+    if (animeData) {
+      const endOffset = itemOffset + itemsPerPage;
+      setCurrentItems(animeData.episodes.slice(itemOffset, endOffset));
+      setPageCount(Math.ceil(animeData.episodes.length / itemsPerPage));
+    }
+  }, [itemOffset, itemsPerPage, animeData, router]);
 
   // Invoke when user click to request another page.
   const handlePageClick = (event: { selected: number }) => {
@@ -85,14 +94,8 @@ const AnimePage: NextPage = ({
           <div className="details flex flex-col justify-end gap-3">
             <p className="font-bold text-4xl">{animeData.title.romaji}</p>
             <div className="actions | flex gap-2">
-              <Link href={`/anime/watch/${animeData.episodes[0].id}`} passHref>
-                <Button
-                  type="primary"
-                  onClick={
-                    () => {}
-                    // router.push(`/anime/watch/${animeData.episodes[0].id}`)
-                  }
-                >
+              <Link href={`/anime/watch/${animeData.episodes[0]?.id}`} passHref>
+                <Button type="primary" onClick={() => {}}>
                   <FaPlay className="w-5 h-5" /> Play
                 </Button>
               </Link>
@@ -104,49 +107,75 @@ const AnimePage: NextPage = ({
           </div>
         </div>
 
-        <section className="flex my-10">
-          <div className="w-2/3 flex flex-col gap-2">
-            <div className="info flex items-center gap-4">
-              <p>{animeData.releaseDate} </p>
-              <span className="border border-white rounded-sm text-xs p-[2px]">
-                {animeData.type}
-              </span>
-              <p>
-                Score: <span className="font-bold">{animeData.rating}</span>
-              </p>
-              <p>
-                <span className="font-bold">{animeData.totalEpisodes}</span>{" "}
-                Episodes
-              </p>
-              <div className="border rounded text-xs p-1 px-2">
-                {animeData.status}
-              </div>
-            </div>
-            <div
-              // className="whitespace-pre-line"
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(animeData.description),
-              }}
-            ></div>
-          </div>
-          <div className="w-1/3 flex flex-col">
-            <div className="flex flex-col gap-4 px-20 py-5">
-              <p className="text-gray-500 text-sm">
-                Genres:
-                <span className="font-normal ml-2 text-gray-300">
-                  {animeData.genres.join(", ")}
-                </span>
-              </p>
+        <Tabs
+          selectedIndex={tabIndex}
+          onSelect={(index) => setTabIndex(index)}
+          className="mt-10"
+        >
+          <TabList>
+            <Tab>Overview</Tab>
+            <Tab>Relations</Tab>
+            <Tab>Recommendations</Tab>
+          </TabList>
 
-              <p className="text-gray-500 text-sm">
-                Studios:
-                <span className="font-normal ml-2 text-gray-300">
-                  {animeData.studios.join(", ")}
-                </span>
-              </p>
-            </div>
-          </div>
-        </section>
+          <TabPanel>
+            <section className="flex my-10">
+              <div className="w-2/3 flex flex-col gap-2">
+                <div className="info flex items-center gap-4">
+                  <p>{animeData.releaseDate} </p>
+                  <span className="border border-white rounded-sm text-xs p-[2px]">
+                    {animeData.type}
+                  </span>
+                  <p>
+                    Score: <span className="font-bold">{animeData.rating}</span>
+                  </p>
+                  <p>
+                    <span className="font-bold">{animeData.totalEpisodes}</span>{" "}
+                    Episodes
+                  </p>
+                  <div className="border rounded text-xs p-1 px-2">
+                    {animeData.status}
+                  </div>
+                </div>
+                <div
+                  // className="whitespace-pre-line"
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(animeData.description),
+                  }}
+                ></div>
+              </div>
+              <div className="w-1/3 flex flex-col">
+                <div className="flex flex-col gap-4 px-20 py-5">
+                  <p className="text-gray-500 text-sm">
+                    Genres:
+                    <span className="font-normal ml-2 text-gray-300">
+                      {animeData.genres.join(", ")}
+                    </span>
+                  </p>
+
+                  <p className="text-gray-500 text-sm">
+                    Studios:
+                    <span className="font-normal ml-2 text-gray-300">
+                      {animeData.studios.join(", ")}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </section>
+          </TabPanel>
+          <TabPanel>
+            <section className="flex flex-col my-10">
+              <h2 className="text-xl">Relations</h2>
+              <HorizontalAnimeTile data={animeData.relations} />
+            </section>
+          </TabPanel>
+          <TabPanel>
+            <section className="flex flex-col my-10">
+              <h2 className="text-xl">Recommendations</h2>
+              <HorizontalAnimeTile data={animeData.recommendations} />
+            </section>
+          </TabPanel>
+        </Tabs>
 
         <section className="flex flex-col gap-4">
           <div className="flex py-5 items-center">
