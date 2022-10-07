@@ -48,16 +48,17 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
         </a>
       </Link>
 
-      <ul className="flex flex-grow gap-4 text-sm">
+      <ul className="flex-grow gap-4 text-sm hidden md:flex">
         {LINKS.map((link) => (
           <li
             key={link.link}
-            className="whitespace-nowrap font-light hover:font-semibold hover:underline underline-offset-4 transition"
+            className="whitespace-nowrap font-light hover:underline underline-offset-4 transition"
           >
             <Link href={link.href}>{link.link}</Link>
           </li>
         ))}
       </ul>
+      <div className="flex-grow"></div>
 
       {/* Search and user Icon */}
       <div className="justify-end group flex items-center p-2 text-sm text-zinc-300 hover:bg-black focus:bg-black focus-visible:bg-black focus-within:bg-black border border-transparent hover:border-white focus:border-white focus-visible:border-white focus-within:border-white">

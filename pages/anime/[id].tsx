@@ -84,7 +84,7 @@ const AnimePage: NextPage = ({
         <div className="absolute top-0 left-0 h-full w-full bg-gradient-to-t from-black"></div>
       </div>
 
-      <section className="px-20 -translate-y-32">
+      <section className="px-5 md:px-20 -translate-y-32">
         <div className="flex gap-8">
           <img
             className="w-44 h-60 rounded shadow-lg shadow-slate-800"
@@ -119,8 +119,8 @@ const AnimePage: NextPage = ({
           </TabList>
 
           <TabPanel>
-            <section className="flex my-10">
-              <div className="w-2/3 flex flex-col gap-2">
+            <section className="flex flex-col md:flex-row my-10">
+              <div className="w-full md:w-2/3 flex flex-col gap-2">
                 <div className="info flex items-center gap-4">
                   <p>{animeData.releaseDate} </p>
                   <span className="border border-white rounded-sm text-xs p-[2px]">
@@ -144,8 +144,8 @@ const AnimePage: NextPage = ({
                   }}
                 ></div>
               </div>
-              <div className="w-1/3 flex flex-col">
-                <div className="flex flex-col gap-4 px-20 py-5">
+              <div className="w-full md:w-1/3 flex flex-col">
+                <div className="flex flex-col gap-4 md:px-20 py-5">
                   <p className="text-gray-500 text-sm">
                     Genres:
                     <span className="font-normal ml-2 text-gray-300">

@@ -56,7 +56,7 @@ const HomePage: NextPage = ({
 
   return (
     <div className="flex flex-col">
-      <div className="h-[80vh] relative w-full flex">
+      <div className="h-[40vh] sm:h-[50vh]  md:h-[80vh] relative w-full flex">
         <ReactPlayer
           url={home.youtube_url}
           className="react-player"
@@ -76,17 +76,17 @@ const HomePage: NextPage = ({
             src={home.cover_url}
             alt="cover"
           />
-          <div className="main | absolute pl-20 bottom-0 h-full w-full bg-gradient-to-tr from-black  flex flex-col-reverse">
+          <div className="main | absolute pl-5 md:pl-20 bottom-0 h-full w-full bg-gradient-to-tr from-black  flex flex-col-reverse">
             <div className="">
               <img
                 className={cn(
-                  "h-20 w-fit scale-150 duration-1000 -translate-y-10 origin-bottom-left transition-transform",
+                  "h-10 md:h-20 w-fit scale-150 duration-1000 -translate-y-10 origin-bottom-left transition-transform",
                   { "scale-100 translate-y-0": playing }
                 )}
                 src={home.logo_url}
                 alt="Title"
               />
-              <div className="flex gap-4 mt-10">
+              <div className="flex my-5 gap-4  sm:mt-10">
                 <Link href={`/anime/watch/${home.episode_id}`} passHref>
                   <Button
                     type="primary"
@@ -105,7 +105,7 @@ const HomePage: NextPage = ({
               </div>
               <p
                 className={cn(
-                  "py-8 w-1/2 text-sm text-slate-300 transition-opacity duration-500",
+                  "py-8 w-1/2 text-sm hidden md:block text-slate-300 transition-opacity duration-500",
                   { "opacity-0": playing }
                 )}
               >
@@ -125,12 +125,12 @@ const HomePage: NextPage = ({
         </div>
       </div>
 
-      <section className="pl-20 mt-2">
+      <section className="pl-5 md:pl-20 mt-2">
         <h2 className="text-xl">New Releases</h2>
         <HorizontalAnimeTile data={recentEpisodes} />
       </section>
 
-      <section className="pl-20 mt-10">
+      <section className="pl-5 md:pl-20 mt-10">
         <h2 className="text-xl">Trending Anime</h2>
         <HorizontalAnimeTile data={trending} />
       </section>
