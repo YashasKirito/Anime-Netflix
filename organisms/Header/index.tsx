@@ -3,6 +3,7 @@ import { RiSearchLine } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa";
 import { BsArrowLeft } from "react-icons/bs";
 import { useRouter } from "next/router";
+import { Debounce } from "utils/debounce";
 
 const LINKS = [
   { link: "Home", href: "/" },
@@ -28,8 +29,19 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
     );
   }
 
+  const handleSearch = Debounce((e) => {
+    if (e.target.value) {
+      router.push({
+        pathname: "/search",
+        query: {
+          query: e.target.value,
+        },
+      });
+    }
+  }, 1000);
+
   return (
-    <header className="flex p-4 lg:px-36 md:px-20  sticky items-center top-0 z-10 bg-gradient-to-b from-black w-full">
+    <header className="flex p-4 lg:px-36 md:px-20 sticky items-center top-0 z-10 bg-gradient-to-b from-black w-full">
       <Link href={"/"}>
         <a className="font-semibold uppercase text-orange-600 text-2xl mr-8 select-none">
           Aniflix
@@ -53,6 +65,7 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
           className="p-0 border-none opacity-0 outline-none bg-inherit group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100 group-focus-visible:opacity-100"
           type="text"
           placeholder="Search"
+          onChange={handleSearch}
         />
         <RiSearchLine className="h-5 w-5" />
       </div>

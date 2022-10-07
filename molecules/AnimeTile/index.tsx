@@ -11,6 +11,10 @@ const AnimeTile = ({ anime }: { anime: any }) => {
           <span className="text-sm font-bold text-slate-50 translate-y-5 transition-transform duration-200 group-hover:translate-y-0">
             {anime.title.romaji}
           </span>
+          <div className="flex-grow"></div>
+          <div className="span text-xs font-bold border rounded w-fit p-1">
+            {anime.type}
+          </div>
         </div>
       </div>
     </Link>

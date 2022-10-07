@@ -3,4 +3,6 @@ export const urls = {
   trending: "meta/anilist/trending",
   getAnime: "meta/anilist/info/",
   watch: "meta/anilist/watch/",
+  search: "meta/anilist/",
+  advancedSearch: `meta/anilist/advanced-search`,
 };
