@@ -18,7 +18,7 @@ interface IHeader {
 
 const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
   const router = useRouter();
-  if (isWatchRoute) { 
+  if (isWatchRoute) {
     return (
       <header className="absolute z-50 p-5 px-10">
         <button onClick={() => router.back()}>
@@ -48,9 +48,9 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
       </ul>
 
       {/* Search and user Icon */}
-      <div className="justify-end group flex items-center p-2 text-sm text-zinc-300 hover:bg-black border border-transparent hover:border-white">
+      <div className="justify-end group flex items-center p-2 text-sm text-zinc-300 hover:bg-black focus:bg-black focus-visible:bg-black focus-within:bg-black border border-transparent hover:border-white focus:border-white focus-visible:border-white focus-within:border-white">
         <input
-          className="p-0 border-none opacity-0 outline-none bg-inherit group-hover:opacity-100"
+          className="p-0 border-none opacity-0 outline-none bg-inherit group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100 group-focus-visible:opacity-100"
           type="text"
           placeholder="Search"
         />
