@@ -8,8 +8,8 @@ import { Debounce } from "utils/debounce";
 const LINKS = [
   { link: "Home", href: "/" },
   { link: "Top Anime", href: "/top" },
+  { link: "Top Airing", href: "/top-airing" },
   { link: "Upcoming", href: "/upcoming" },
-  { link: "Current season", href: "/current-season" },
   { link: "My List", href: "/mylist" },
 ];
 

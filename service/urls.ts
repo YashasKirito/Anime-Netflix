@@ -5,4 +5,6 @@ export const urls = {
   watch: "meta/anilist/watch/",
   search: "meta/anilist/",
   advancedSearch: `meta/anilist/advanced-search`,
+  top: "meta/anilist/popular",
+  topAiring: `meta/anilist/advanced-search?year=2022&status=RELEASING&sort=["POPULARITY_DESC"]`
 };

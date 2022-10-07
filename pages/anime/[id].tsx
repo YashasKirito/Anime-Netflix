@@ -234,13 +234,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const res = await axios.get(
-    process.env.BASE_URL + urls.getAnime + context.params?.id || ""
-  );
-  return {
-    props: {
-      animeData: res.data,
-    },
-    revalidate: 120,
-  };
+  try {
+    const res = await axios.get(
+      process.env.BASE_URL + urls.getAnime + context.params?.id || ""
+    );
+
+    return {
+      props: {
+        animeData: res.data,
+      },
+      revalidate: 120,
+    };
+  } catch {
+    return {
+      notFound: true,
+    };
+  }
 };
