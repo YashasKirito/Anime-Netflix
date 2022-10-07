@@ -85,14 +85,17 @@ const AnimePage: NextPage = ({
           <div className="details flex flex-col justify-end gap-3">
             <p className="font-bold text-4xl">{animeData.title.romaji}</p>
             <div className="actions | flex gap-2">
-              <Button
-                type="primary"
-                onClick={() =>
-                  router.push(`/anime/watch/${animeData.episodes[0].id}`)
-                }
-              >
-                <FaPlay className="w-5 h-5" /> Play
-              </Button>
+              <Link href={`/anime/watch/${animeData.episodes[0].id}`} passHref>
+                <Button
+                  type="primary"
+                  onClick={
+                    () => {}
+                    // router.push(`/anime/watch/${animeData.episodes[0].id}`)
+                  }
+                >
+                  <FaPlay className="w-5 h-5" /> Play
+                </Button>
+              </Link>
 
               <Button type="secondary" onClick={() => console.log("Click")}>
                 <BsPlusLg className="w-5 h-5" /> My List

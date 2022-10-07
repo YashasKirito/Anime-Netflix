@@ -13,6 +13,7 @@ import { BsPlusLg } from "react-icons/bs";
 import { urls } from "service/urls";
 import HorizontalAnimeTile from "organisms/HorizontalAnimeTile";
 import { useRouter } from "next/router";
+import Link from "next/link";
 const ReactPlayer = dynamic(() => import("react-player"), {
   ssr: false,
 });
@@ -86,12 +87,17 @@ const HomePage: NextPage = ({
                 alt="Title"
               />
               <div className="flex gap-4 mt-10">
-                <Button
-                  type="primary"
-                  onClick={() => router.push(`/anime/watch/${home.episode_id}`)}
-                >
-                  <FaPlay className="w-5 h-5" /> Play
-                </Button>
+                <Link href={`/anime/watch/${home.episode_id}`} passHref>
+                  <Button
+                    type="primary"
+                    onClick={
+                      () => {}
+                      // router.push(`/anime/watch/${home.episode_id}`)
+                    }
+                  >
+                    <FaPlay className="w-5 h-5" /> Play
+                  </Button>
+                </Link>
 
                 <Button type="secondary" onClick={() => console.log("Click")}>
                   <BsPlusLg className="w-5 h-5" /> My List
