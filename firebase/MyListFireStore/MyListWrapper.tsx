@@ -3,13 +3,13 @@ import { Unsubscribe } from "firebase/auth";
 import { collection, doc, onSnapshot, query } from "firebase/firestore";
 import { useEffect } from "react";
 import { useMyListStore } from "store/MyListStore";
-import { db } from "../firebase";
+import { db } from "..";
 
 const MyListWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const user = useAuthStore((state) => state.user);
-  const [setList] = useMyListStore(state => [state.setList])
+  const [setList] = useMyListStore((state) => [state.setList]);
   useEffect(() => {
     let unSub: Unsubscribe;
     if (user) {

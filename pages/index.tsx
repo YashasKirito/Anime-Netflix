@@ -9,15 +9,15 @@ import cn from "classnames";
 import { OnProgressProps } from "react-player/base";
 import Button from "@atoms/Button";
 import { FaPlay } from "react-icons/fa";
-import { BsPlusLg } from "react-icons/bs";
+import { BsPlusLg, BsCheckLg } from "react-icons/bs";
+import { TiTick } from "react-icons/ti";
 import { urls } from "service/urls";
 import HorizontalAnimeTile from "organisms/HorizontalAnimeTile";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import { useAuthStore } from "Auth";
-import { db } from "../firebase";
-import { collection, addDoc, getDocs, setDoc, doc } from "firebase/firestore";
 import { useMutedStore } from "store/useMuted";
+import { useMyListStore } from "store/MyListStore";
+import { addItemToMyListFireStore } from "../firebase/MyListFireStore/helpers";
 const ReactPlayer = dynamic(() => import("react-player"), {
   ssr: false,
 });
@@ -32,33 +32,9 @@ const HomePage: NextPage = ({
     state.muted,
     state.toggleMute,
   ]);
+  const myList = useMyListStore((state) => state.myList);
 
-  const user = useAuthStore((state) => state.user);
-
-  const addItemMyList = async (item: {
-    animeId: string;
-    imageUrl: string;
-    name: string;
-    type: string;
-  }) => {
-    if (user) {
-      // const cityRef = doc(
-      //   db,
-      //   "mylist",
-      //   `${user.email}`,
-      //   "watch-list",
-      //   item.animeId
-      // );
-      // const res = await setDoc(cityRef, item, { merge: true });
-      // const citiesRef = collection(db, "mylist", `${user.email}`, "watch-list");
-      // const querySnapshot = await getDocs(citiesRef);
-      // console.log(querySnapshot.docs.length);
-      // querySnapshot.forEach((doc) => {
-      //   // doc.data() is never undefined for query doc snapshots
-      //   console.log(doc.id, " => ", JSON.stringify(doc.data()));
-      // });
-    }
-  };
+  console.log(myList);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -122,9 +98,25 @@ const HomePage: NextPage = ({
                   </Button>
                 </Link>
 
-                <Button type="secondary" onClick={() => {}}>
-                  <BsPlusLg className="w-5 h-5" /> My List
-                </Button>
+                {myList[home.id] ? (
+                  <Button type="secondary" onClick={() => {}}>
+                    <BsCheckLg className="w-5 h-5" />
+                  </Button>
+                ) : (
+                  <Button
+                    type="secondary"
+                    onClick={() =>
+                      addItemToMyListFireStore({
+                        id: home.id,
+                        name: home.name,
+                        image: home.image,
+                        type: home.type,
+                      })
+                    }
+                  >
+                    <BsPlusLg className="w-5 h-5" /> My List
+                  </Button>
+                )}
               </div>
               <p
                 className={cn(
@@ -169,7 +161,11 @@ const HomePage: NextPage = ({
 export const getStaticProps: GetStaticProps = async () => {
   const HOME_TILES = [
     {
+      id: "120377",
       name: "Edge runners",
+      image:
+        "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx120377-p2PmPHb6Zwk0.jpg",
+      type: "ONA",
       description:
         "CYBERPUNK: EDGERUNNERS tells a standalone, 10-episode story about a street kid trying to survive in a technology and body modification-obsessed city of the future. Having everything to lose, he chooses to stay alive by becoming an edgerunner—a mercenary outlaw also known as a cyberpunk.",
       youtube_url: "https://www.youtube.com/watch?v=JtqIas3bYhg",
@@ -178,7 +174,11 @@ export const getStaticProps: GetStaticProps = async () => {
       episode_id: "cyberpunk-edgerunners-episode-1",
     },
     {
+      id: "141391",
       name: "Yofukashi no Uta",
+      image:
+        "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx141391-rEJ1hm9i2PFa.jpg",
+      type: "TV",
       description:
         "Wracked by insomnia and wanderlust, Kou Yamori is driven onto the moonlit streets every night in an aimless search for something he can’t seem to name. His nightly ritual is marked by purposeless introspection — until he meets Nazuna, who might just be a vampire! Kou’s new companion could offer him dark gifts and a vampire’s immortality. But there are conditions that must be met before Kou can sink his teeth into vampirism, and he’ll have to discover just how far he’s willing to go to satisfy his desires before he can heed the Call of the Night!",
       youtube_url: "https://www.youtube.com/watch?v=ukO-ZdWS3j8",
@@ -187,7 +187,11 @@ export const getStaticProps: GetStaticProps = async () => {
       episode_id: "yofukashi-no-uta-episode-1",
     },
     {
+      id: "129201",
+      image:
+        "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx129201-HJBauga2be8I.png",
       name: "Summer Time Render",
+      type: "TV",
       description:
         "A sci-fi, summer story filled with suspense set on a small island with Shinpei Aijiro, whose childhood friend Ushio Kofune died. He returns to his hometown for the first time in two years for the funeral. Sou Hishigata, his best friend, suspects something's off with Ushio's death, and that someone can die next.A sinister omen is heard as an entire family next door suddenly disappears the following day. Furthermore, Mio implicates a \"shadow\" three days before Ushio's death.",
       youtube_url: "https://www.youtube.com/watch?v=_JgOMtS2FkE",

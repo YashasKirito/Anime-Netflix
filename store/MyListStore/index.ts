@@ -1,6 +1,6 @@
 import create from "zustand";
 
-type item = {
+export type itemType = {
   id: string;
   name: string;
   image: string;
@@ -8,14 +8,14 @@ type item = {
 };
 
 interface IList {
-  [key: string]: item;
+  [key: string]: itemType;
 }
 
 interface MyListState {
   myList: IList;
   setList: (items: IList) => void;
   stale: boolean;
-  add: (item: item) => void;
+  add: (item: itemType) => void;
 }
 
 export const useMyListStore = create<MyListState>((set, get) => ({
