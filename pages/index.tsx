@@ -17,7 +17,10 @@ import HorizontalAnimeTile from "organisms/HorizontalAnimeTile";
 import Link from "next/link";
 import { useMutedStore } from "store/useMuted";
 import { useMyListStore } from "store/MyListStore";
-import { addItemToMyListFireStore } from "../firebase/MyListFireStore/helpers";
+import {
+  addItemToMyListFireStore,
+  deleteMyListItemFireStore,
+} from "../firebase/MyListFireStore/helpers";
 import { useAuthStore } from "Auth";
 const ReactPlayer = dynamic(() => import("react-player"), {
   ssr: false,
@@ -106,7 +109,9 @@ const HomePage: NextPage = ({
                     <Button
                       className="fade-right"
                       type="secondary"
-                      onClick={() => {}}
+                      onClick={() => {
+                        deleteMyListItemFireStore(home.id);
+                      }}
                     >
                       <MdRemove className="w-5 h-5" />
                     </Button>

@@ -22,7 +22,10 @@ import HorizontalAnimeTile from "@organisms/HorizontalAnimeTile";
 import { useMyListStore } from "store/MyListStore";
 import { TbChecks } from "react-icons/tb";
 import { MdRemove } from "react-icons/md";
-import { addItemToMyListFireStore } from "../../firebase/MyListFireStore/helpers";
+import {
+  addItemToMyListFireStore,
+  deleteMyListItemFireStore,
+} from "../../firebase/MyListFireStore/helpers";
 import { useAuthStore } from "Auth";
 
 const AnimePage: NextPage = ({
@@ -104,7 +107,9 @@ const AnimePage: NextPage = ({
                   <Button
                     className="fade-right"
                     type="secondary"
-                    onClick={() => {}}
+                    onClick={() => {
+                      deleteMyListItemFireStore(animeData.id);
+                    }}
                   >
                     <MdRemove className="w-5 h-5" />
                   </Button>
