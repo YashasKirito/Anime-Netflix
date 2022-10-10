@@ -28,6 +28,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       results: res.data.results,
     },
-    // revalidate: 120,
+    revalidate: 120,
   };
 };

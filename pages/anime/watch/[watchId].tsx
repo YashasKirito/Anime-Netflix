@@ -71,13 +71,20 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const res = await axios.get(
-    process.env.BASE_URL + urls.watch + context.params?.watchId || ""
-  );
-  return {
-    props: {
-      streamData: res.data,
-    },
-    revalidate: 600,
-  };
+  try {
+    const res = await axios.get(
+      process.env.BASE_URL + urls.watch + context.params?.watchId || ""
+    );
+    return {
+      props: {
+        streamData: res.data,
+      },
+      revalidate: 30,
+    };
+  } catch {
+    return {
+      notFound: true,
+      revalidate: 1,
+    };
+  }
 };

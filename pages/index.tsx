@@ -227,7 +227,7 @@ export const getStaticProps: GetStaticProps = async () => {
       recentEpisodes: recent.data.results,
       trending: trending.data.results,
     },
-    revalidate: 120,
+    revalidate: 60,
   };
 };
 
