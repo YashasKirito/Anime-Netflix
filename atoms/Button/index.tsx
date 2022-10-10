@@ -5,9 +5,16 @@ interface IButton {
   onClick: () => void;
   type: "primary" | "secondary";
   disabled?: boolean;
+  className?: string;
 }
 
-const Button: React.FC<IButton> = ({ children, onClick, type, disabled }) => {
+const Button: React.FC<IButton> = ({
+  children,
+  onClick,
+  type,
+  disabled,
+  className,
+}) => {
   return (
     <button
       className={cn(
@@ -17,7 +24,8 @@ const Button: React.FC<IButton> = ({ children, onClick, type, disabled }) => {
           "text-white": type === "secondary",
           "bg-white": type === "primary",
           "bg-gray-400/50": type === "secondary",
-        }
+        },
+        className
       )}
       onClick={onClick}
       disabled={disabled}

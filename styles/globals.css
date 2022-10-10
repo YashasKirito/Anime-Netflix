@@ -81,3 +81,36 @@ a {
 .react-tabs__tab:focus:after {
   height: 0px !important;
 }
+
+.tick-animate {
+  animation: check 400ms ease 1 forwards;
+}
+
+@keyframes check {
+  0% {
+    opacity: 0;
+    transform: translateY(70%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-right {
+  animation: fade-right 1000ms ease 1 forwards;
+}
+
+@keyframes fade-right {
+  0% {
+    opacity: 0;
+    transform: translateX(-70%);
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

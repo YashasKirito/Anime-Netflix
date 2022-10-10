@@ -87,9 +87,9 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
           src={user.photoURL || ""}
           alt="user"
         />
-      ) : (
+      ) : user ? (
         <FaUserCircle className="ml-4 h-8 w-8" />
-      )}
+      ) : null}
       {user ? (
         <button onClick={logout}>Logout</button>
       ) : (

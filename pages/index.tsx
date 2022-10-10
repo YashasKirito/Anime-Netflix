@@ -9,15 +9,16 @@ import cn from "classnames";
 import { OnProgressProps } from "react-player/base";
 import Button from "@atoms/Button";
 import { FaPlay } from "react-icons/fa";
-import { BsPlusLg, BsCheckLg } from "react-icons/bs";
-import { TiTick } from "react-icons/ti";
+import { BsPlusLg } from "react-icons/bs";
+import { TbChecks } from "react-icons/tb";
+import { MdRemove } from "react-icons/md";
 import { urls } from "service/urls";
 import HorizontalAnimeTile from "organisms/HorizontalAnimeTile";
 import Link from "next/link";
-import { useAuthStore } from "Auth";
 import { useMutedStore } from "store/useMuted";
 import { useMyListStore } from "store/MyListStore";
 import { addItemToMyListFireStore } from "../firebase/MyListFireStore/helpers";
+import { useAuthStore } from "Auth";
 const ReactPlayer = dynamic(() => import("react-player"), {
   ssr: false,
 });
@@ -32,9 +33,8 @@ const HomePage: NextPage = ({
     state.muted,
     state.toggleMute,
   ]);
+  const user = useAuthStore((state) => state.user);
   const myList = useMyListStore((state) => state.myList);
-
-  console.log(myList);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -99,10 +99,19 @@ const HomePage: NextPage = ({
                 </Link>
 
                 {myList[home.id] ? (
-                  <Button type="secondary" onClick={() => {}}>
-                    <BsCheckLg className="w-5 h-5" />
-                  </Button>
-                ) : (
+                  <div className="flex gap-2">
+                    <Button type="secondary" onClick={() => {}}>
+                      <TbChecks className="w-5 h-5 tick-animate" />
+                    </Button>
+                    <Button
+                      className="fade-right"
+                      type="secondary"
+                      onClick={() => {}}
+                    >
+                      <MdRemove className="w-5 h-5" />
+                    </Button>
+                  </div>
+                ) : user ? (
                   <Button
                     type="secondary"
                     onClick={() =>
@@ -116,7 +125,7 @@ const HomePage: NextPage = ({
                   >
                     <BsPlusLg className="w-5 h-5" /> My List
                   </Button>
-                )}
+                ) : null}
               </div>
               <p
                 className={cn(

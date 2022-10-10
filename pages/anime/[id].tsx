@@ -19,6 +19,11 @@ import Link from "next/link";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import HorizontalAnimeTile from "@organisms/HorizontalAnimeTile";
+import { useMyListStore } from "store/MyListStore";
+import { TbChecks } from "react-icons/tb";
+import { MdRemove } from "react-icons/md";
+import { addItemToMyListFireStore } from "../../firebase/MyListFireStore/helpers";
+import { useAuthStore } from "Auth";
 
 const AnimePage: NextPage = ({
   animeData,
@@ -32,7 +37,8 @@ const AnimePage: NextPage = ({
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
   const [tabIndex, setTabIndex] = useState(0);
-
+  const myList = useMyListStore((state) => state.myList);
+  const user = useAuthStore((state) => state.user);
   const itemsPerPage = 10;
 
   useEffect(() => {
@@ -90,9 +96,34 @@ const AnimePage: NextPage = ({
                 </Button>
               </Link>
 
-              <Button type="secondary" onClick={() => console.log("Click")}>
-                <BsPlusLg className="w-5 h-5" /> My List
-              </Button>
+              {myList[animeData.id] ? (
+                <div className="flex gap-2">
+                  <Button type="secondary" onClick={() => {}}>
+                    <TbChecks className="w-5 h-5 tick-animate" />
+                  </Button>
+                  <Button
+                    className="fade-right"
+                    type="secondary"
+                    onClick={() => {}}
+                  >
+                    <MdRemove className="w-5 h-5" />
+                  </Button>
+                </div>
+              ) : user ? (
+                <Button
+                  type="secondary"
+                  onClick={() =>
+                    addItemToMyListFireStore({
+                      id: animeData.id,
+                      name: animeData.title.romaji,
+                      image: animeData.image,
+                      type: animeData.type,
+                    })
+                  }
+                >
+                  <BsPlusLg className="w-5 h-5" /> My List
+                </Button>
+              ) : null}
             </div>
           </div>
         </div>
