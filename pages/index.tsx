@@ -14,6 +14,10 @@ import { urls } from "service/urls";
 import HorizontalAnimeTile from "organisms/HorizontalAnimeTile";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useAuthStore } from "Auth";
+import { db } from "../firebase";
+import { collection, addDoc, getDocs, setDoc, doc } from "firebase/firestore";
+import { useMutedStore } from "store/useMuted";
 const ReactPlayer = dynamic(() => import("react-player"), {
   ssr: false,
 });
@@ -23,19 +27,38 @@ const HomePage: NextPage = ({
   recentEpisodes,
   trending,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(false);
+  const [muted, toggleMute] = useMutedStore((state) => [
+    state.muted,
+    state.toggleMute,
+  ]);
 
-  const router = useRouter();
+  const user = useAuthStore((state) => state.user);
 
-  useEffect(() => {
-    const interaction = localStorage.getItem("userInteraction");
-    if (interaction) {
-      setMuted(false);
-    } else {
-      setMuted(true);
+  const addItemMyList = async (item: {
+    animeId: string;
+    imageUrl: string;
+    name: string;
+    type: string;
+  }) => {
+    if (user) {
+      // const cityRef = doc(
+      //   db,
+      //   "mylist",
+      //   `${user.email}`,
+      //   "watch-list",
+      //   item.animeId
+      // );
+      // const res = await setDoc(cityRef, item, { merge: true });
+      // const citiesRef = collection(db, "mylist", `${user.email}`, "watch-list");
+      // const querySnapshot = await getDocs(citiesRef);
+      // console.log(querySnapshot.docs.length);
+      // querySnapshot.forEach((doc) => {
+      //   // doc.data() is never undefined for query doc snapshots
+      //   console.log(doc.id, " => ", JSON.stringify(doc.data()));
+      // });
     }
-  }, []);
+  };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -99,7 +122,7 @@ const HomePage: NextPage = ({
                   </Button>
                 </Link>
 
-                <Button type="secondary" onClick={() => console.log("Click")}>
+                <Button type="secondary" onClick={() => {}}>
                   <BsPlusLg className="w-5 h-5" /> My List
                 </Button>
               </div>
@@ -114,7 +137,12 @@ const HomePage: NextPage = ({
             </div>
           </div>
           <div className="controls absolute bottom-4 right-4">
-            <button onClick={() => setMuted((prev) => !prev)}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleMute();
+              }}
+            >
               {muted ? (
                 <GoMute className="w-10 h-10" color="#fff" />
               ) : (
