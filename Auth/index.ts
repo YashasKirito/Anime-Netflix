@@ -10,16 +10,20 @@ import create from "zustand";
 interface AuthState {
   user: User | null;
   token: string | null;
+  loading: boolean;
   login: () => void;
   logout: () => void;
   setUser: (user: User | null) => void;
+  setLoading: (val: boolean) => void;
 }
 
 const provider = new GoogleAuthProvider();
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
+  loading: true,
   token: null,
+  setLoading: (val) => set({ loading: val }),
   setUser: (user) => set({ user }),
   login: () => {
     signInWithPopup(auth, provider)
