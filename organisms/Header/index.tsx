@@ -1,9 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
+
 import Link from "next/link";
 import { RiSearchLine } from "react-icons/ri";
 import { FaUserCircle } from "react-icons/fa";
 import { BsArrowLeft } from "react-icons/bs";
 import { useRouter } from "next/router";
 import { Debounce } from "utils/debounce";
+import { useAuthStore } from "Auth";
 
 const LINKS = [
   { link: "Home", href: "/" },
@@ -19,6 +22,13 @@ interface IHeader {
 
 const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
   const router = useRouter();
+
+  const [login, user, logout] = useAuthStore((state) => [
+    state.login,
+    state.user,
+    state.logout,
+  ]);
+
   if (isWatchRoute) {
     return (
       <header className="absolute z-50 p-5 px-10">
@@ -70,7 +80,21 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
         />
         <RiSearchLine className="h-5 w-5" />
       </div>
-      <FaUserCircle className="ml-4 h-5 w-5" />
+
+      {user && user.photoURL ? (
+        <img
+          className="w-8 rounded-full aspect-square"
+          src={user.photoURL || ""}
+          alt="user"
+        />
+      ) : (
+        <FaUserCircle className="ml-4 h-8 w-8" />
+      )}
+      {user ? (
+        <button onClick={logout}>Logout</button>
+      ) : (
+        <button onClick={login}>Login</button>
+      )}
     </header>
   );
 };

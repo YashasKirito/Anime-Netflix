@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import cn from "classnames";
 import { useEffect } from "react";
+import { useMutedStore } from "store/useMuted";
 
 interface ILayout {
   children: React.ReactNode;
@@ -10,6 +11,7 @@ interface ILayout {
 
 const Layout: React.FC<ILayout> = ({ children }) => {
   const router = useRouter();
+  const setMuted = useMutedStore((state) => state.setMuted);
 
   const isWatchRoute = router.asPath.includes("watch");
 
@@ -17,6 +19,7 @@ const Layout: React.FC<ILayout> = ({ children }) => {
     const interaction = localStorage.getItem("userInteraction");
     if (!interaction) {
       localStorage.setItem("userInteraction", "true");
+      setMuted(false);
     }
   };
 

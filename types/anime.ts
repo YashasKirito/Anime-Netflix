@@ -26,19 +26,8 @@ export interface IAnime {
 
 export interface IEpisode {
   id: string;
-  malId: number;
-  title: {
-    romaji: string;
-    english: string;
-    native: string;
-    userPreferred: string;
-  };
+  title: string;
+  description: null | string;
+  number: number;
   image: string;
-  rating: null | number;
-  color: string;
-  episodeId: string;
-  episodeTitle: string;
-  episodeNumber: 1;
-  genres: string[];
-  type: string;
 }

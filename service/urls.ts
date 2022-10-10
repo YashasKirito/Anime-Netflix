@@ -2,6 +2,7 @@ export const urls = {
   recentEpisodes: "meta/anilist/recent-episodes",
   trending: "meta/anilist/trending",
   getAnime: "meta/anilist/info/",
+  getEpisodes: "meta/anilist/episodes/",
   watch: "meta/anilist/watch/",
   search: "meta/anilist/",
   advancedSearch: `meta/anilist/advanced-search`,

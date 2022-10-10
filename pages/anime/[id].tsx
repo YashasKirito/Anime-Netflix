@@ -55,16 +55,6 @@ const AnimePage: NextPage = ({
     setItemOffset(newOffset);
   };
 
-  // if (error) {
-  //   return (
-  //     <div className="flex h-screen items-center justify-center">
-  //       <h1 className="font-bold text-4xl">
-  //         Sorry! couldn&apos;t get the anime details, please try again later!
-  //       </h1>
-  //     </div>
-  //   );
-  // }
-
   if (router.isFallback) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -243,11 +233,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
       props: {
         animeData: res.data,
       },
-      revalidate: 120,
+      revalidate: 60,
     };
   } catch {
     return {
       notFound: true,
+      revalidate: 1,
     };
   }
 };
