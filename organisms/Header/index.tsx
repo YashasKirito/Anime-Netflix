@@ -7,6 +7,8 @@ import { BsArrowLeft } from "react-icons/bs";
 import { useRouter } from "next/router";
 import { Debounce } from "utils/debounce";
 import { useAuthStore } from "Auth";
+import { useEffect, useState } from "react";
+import classNames from "classnames";
 
 const LINKS = [
   { link: "Home", href: "/" },
@@ -28,6 +30,23 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
     state.user,
     state.logout,
   ]);
+
+  const [scrollThreshold, setScrollThreshold] = useState(false);
+
+  useEffect(() => {
+    const listener = (e: Event) => {
+      if (window.scrollY > 60) {
+        !scrollThreshold && setScrollThreshold(true);
+      } else {
+        scrollThreshold && setScrollThreshold(false);
+      }
+    };
+    window.addEventListener("scroll", listener);
+
+    return () => {
+      window.removeEventListener("scroll", listener);
+    };
+  }, [scrollThreshold]);
 
   if (isWatchRoute) {
     return (
@@ -51,14 +70,19 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
   }, 1000);
 
   return (
-    <header className="flex p-4 lg:px-36 md:px-20 sticky items-center top-0 z-10 bg-gradient-to-b from-black w-full">
+    <header
+      className={classNames(
+        "flex p-4 lg:px-36 md:px-20 sticky items-center transition duration-500 top-0 z-10 bg-gradient-to-b from-black w-full",
+        { "backdrop-blur bg-black/20": scrollThreshold }
+      )}
+    >
       <Link href={"/"}>
-        <a className="font-semibold uppercase text-orange-600 text-2xl mr-8 select-none">
+        <a className="font-semibold uppercase text-orange-600 text-2xl md:text-4xl mr-8 md:mr-12 select-none">
           Aniflix
         </a>
       </Link>
 
-      <ul className="flex-grow gap-4 text-sm hidden md:flex">
+      <ul className="flex-grow gap-4 font-semibold hidden md:flex">
         {LINKS.map((link) => (
           <li
             key={link.link}
@@ -71,7 +95,7 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
       <div className="flex-grow"></div>
 
       {/* Search and user Icon */}
-      <div className="justify-end group flex items-center p-2 text-sm text-zinc-300 hover:bg-black focus:bg-black focus-visible:bg-black focus-within:bg-black border border-transparent hover:border-white focus:border-white focus-visible:border-white focus-within:border-white">
+      <div className="justify-end transition-all group flex items-center p-2 text-sm text-zinc-300 hover:bg-black focus:bg-black focus-visible:bg-black focus-within:bg-black border border-transparent hover:border-white focus:border-white focus-visible:border-white focus-within:border-white">
         <input
           className="p-0 border-none opacity-0 outline-none bg-inherit group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100 group-focus-visible:opacity-100"
           type="text"

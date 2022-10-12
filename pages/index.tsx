@@ -22,6 +22,7 @@ import {
   deleteMyListItemFireStore,
 } from "../firebase/MyListFireStore/helpers";
 import { useAuthStore } from "Auth";
+import RecentAnimeTime from "@molecules/RecentAnimeTile";
 const ReactPlayer = dynamic(() => import("react-player"), {
   ssr: false,
 });
@@ -41,7 +42,7 @@ const HomePage: NextPage = ({
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setPlaying(true);
+      // setPlaying(true);
     }, 5000);
 
     return () => {
@@ -159,15 +160,15 @@ const HomePage: NextPage = ({
         </div>
       </div>
 
-      <section className="pl-5 md:pl-20 mt-2">
-        <h2 className="text-xl">New Releases</h2>
-        <HorizontalAnimeTile data={recentEpisodes} />
+      <section className="pl-5 pb-20 md:pl-20 mt-2">
+        <h2 className="text-2xl">New Releases</h2>
+        <HorizontalAnimeTile data={recentEpisodes} Component={RecentAnimeTime} />
       </section>
 
-      <section className="pl-5 md:pl-20 mt-10">
+      {/* <section className="pl-5 md:pl-20 mt-10">
         <h2 className="text-xl">Trending Anime</h2>
         <HorizontalAnimeTile data={trending} />
-      </section>
+      </section> */}
     </div>
   );
 };

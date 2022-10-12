@@ -3,9 +3,11 @@ import cn from "classnames";
 interface IButton {
   children: React.ReactNode;
   onClick: () => void;
-  type: "primary" | "secondary";
+  type: "primary" | "secondary" | "custom";
   disabled?: boolean;
   className?: string;
+  color?: string;
+  textColor?: string;
 }
 
 const Button: React.FC<IButton> = ({
@@ -14,6 +16,8 @@ const Button: React.FC<IButton> = ({
   type,
   disabled,
   className,
+  color,
+  textColor,
 }) => {
   return (
     <button
@@ -27,6 +31,7 @@ const Button: React.FC<IButton> = ({
         },
         className
       )}
+      style={type === "custom" ? { background: color, color: textColor || "#fff" } : {}}
       onClick={onClick}
       disabled={disabled}
     >

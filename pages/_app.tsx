@@ -5,17 +5,22 @@ import type { AppProps } from "next/app";
 import Layout from "organisms/Layout";
 import AuthProvider from "Auth/AuthProvider";
 import MyListWrapper from "../firebase/MyListFireStore/MyListWrapper";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
-      <AuthProvider>
-        <MyListWrapper>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </MyListWrapper>
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <MyListWrapper>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </MyListWrapper>
+        </AuthProvider>
+      </QueryClientProvider>
     </>
   );
 }
