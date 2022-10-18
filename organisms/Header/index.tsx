@@ -77,8 +77,8 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
       )}
     >
       <Link href={"/"}>
-        <a className="font-semibold uppercase text-orange-600 text-2xl md:text-4xl mr-8 md:mr-12 select-none">
-          Aniflix
+        <a className="italic font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 text-4xl md:text-4xl mr-8 md:mr-12 select-none">
+          Animatrix
         </a>
       </Link>
 

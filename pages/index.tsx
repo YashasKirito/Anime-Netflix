@@ -42,7 +42,7 @@ const HomePage: NextPage = ({
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      // setPlaying(true);
+      setPlaying(true);
     }, 5000);
 
     return () => {

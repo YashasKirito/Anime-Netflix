@@ -8,7 +8,11 @@ module.exports = {
     "./molecules/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        Montserrat: ["Montserrat", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };
