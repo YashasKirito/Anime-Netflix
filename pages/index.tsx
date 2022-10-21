@@ -79,7 +79,7 @@ const HomePage: NextPage = ({
             src={home.cover_url}
             alt="cover"
           />
-          <div className="main | absolute pl-5 md:pl-20 bottom-0 h-full w-full bg-gradient-to-tr from-black  flex flex-col-reverse">
+          <div className="main | absolute pl-5 md:pl-20 bottom-0 h-full w-full bg-gradient-to-t from-black  flex flex-col-reverse">
             <div className="">
               <img
                 className={cn(
@@ -89,16 +89,25 @@ const HomePage: NextPage = ({
                 src={home.logo_url}
                 alt="Title"
               />
-              <div className="flex my-5 gap-4  sm:mt-10">
+              <p
+                className={cn(
+                  "py-4 w-1/2 hidden md:block transition-opacity duration-500",
+                  { "opacity-0": playing }
+                )}
+              >
+                {(home.description as string).substring(0, 200)}...
+              </p>
+              <div className="flex my-5 mb-10 gap-4 lg:gap-6">
                 <Link href={`/anime/watch/${home.episode_id}`} passHref>
                   <Button
                     type="primary"
+                    className="lg:py-4 lg:px-10 lg:text-2xl"
                     onClick={
                       () => {}
                       // router.push(`/anime/watch/${home.episode_id}`)
                     }
                   >
-                    <FaPlay className="w-5 h-5" /> Play
+                    <FaPlay /> Play
                   </Button>
                 </Link>
 
@@ -119,6 +128,7 @@ const HomePage: NextPage = ({
                   </div>
                 ) : user ? (
                   <Button
+                    className="lg:py-4 lg:px-10 lg:text-2xl"
                     type="secondary"
                     onClick={() =>
                       addItemToMyListFireStore({
@@ -129,18 +139,10 @@ const HomePage: NextPage = ({
                       })
                     }
                   >
-                    <BsPlusLg className="w-5 h-5" /> My List
+                    <BsPlusLg /> My List
                   </Button>
                 ) : null}
               </div>
-              <p
-                className={cn(
-                  "py-8 w-1/2 text-sm hidden md:block text-slate-300 transition-opacity duration-500",
-                  { "opacity-0": playing }
-                )}
-              >
-                {home.description}
-              </p>
             </div>
           </div>
           <div className="controls absolute bottom-4 right-4">
@@ -162,7 +164,10 @@ const HomePage: NextPage = ({
 
       <section className="pl-5 pb-20 md:pl-20 mt-2">
         <h2 className="text-2xl">New Releases</h2>
-        <HorizontalAnimeTile data={recentEpisodes} Component={RecentAnimeTime} />
+        <HorizontalAnimeTile
+          data={recentEpisodes}
+          Component={RecentAnimeTime}
+        />
       </section>
 
       {/* <section className="pl-5 md:pl-20 mt-10">

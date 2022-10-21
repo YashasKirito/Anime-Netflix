@@ -32,12 +32,12 @@ const Layout: React.FC<ILayout> = ({ children }) => {
   return (
     <div onClick={setUserInteraction} className="font-Montserrat">
       <Head>
-        <title>Aniflix</title>
-        <meta name="description" content="Netflix for Anime: Add Free" />
+        <title>AniClub</title>
+        <meta name="description" content="Netflix for Anime: Ad Free" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header isWatchRoute={isWatchRoute} />
-      <div className={cn({ "-mt-20": !isWatchRoute })}>{children}</div>
+      <div>{children}</div>
     </div>
   );
 };

@@ -72,13 +72,13 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
   return (
     <header
       className={classNames(
-        "flex p-4 lg:px-36 md:px-20 sticky items-center transition duration-500 top-0 z-10 bg-gradient-to-b from-black w-full",
+        "flex p-4 lg:px-36 md:px-20 fixed items-center transition duration-500 top-0 z-10 bg-gradient-to-b from-black w-full",
         { "backdrop-blur bg-black/20": scrollThreshold }
       )}
     >
       <Link href={"/"}>
-        <a className="italic font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 text-4xl md:text-4xl mr-8 md:mr-12 select-none">
-          Animatrix
+        <a className="italic font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 text-4xl md:text-4xl mr-8 md:mr-12 select-none">
+          AniClub
         </a>
       </Link>
 
@@ -95,7 +95,7 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
       <div className="flex-grow"></div>
 
       {/* Search and user Icon */}
-      <div className="justify-end transition-all group flex items-center p-2 text-sm text-zinc-300 hover:bg-black focus:bg-black focus-visible:bg-black focus-within:bg-black border border-transparent hover:border-white focus:border-white focus-visible:border-white focus-within:border-white">
+      <div className="justify-end mr-5 transition-all group flex items-center p-2 text-sm text-zinc-300 hover:bg-black focus:bg-black focus-visible:bg-black focus-within:bg-black border border-transparent hover:border-white focus:border-white focus-visible:border-white focus-within:border-white">
         <input
           className="p-0 border-none opacity-0 outline-none bg-inherit group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100 group-focus-visible:opacity-100"
           type="text"
@@ -114,11 +114,9 @@ const Header: React.FC<IHeader> = ({ isWatchRoute }) => {
       ) : user ? (
         <FaUserCircle className="ml-4 h-8 w-8" />
       ) : null}
-      {user ? (
-        <button onClick={logout}>Logout</button>
-      ) : (
+      {!user &&
         <button onClick={login}>Login</button>
-      )}
+      }
     </header>
   );
 };
