@@ -117,3 +117,9 @@ a {
     transform: translateX(0);
   }
 }
+
+.skip,
+.skip path {
+  /* fill: currentColor; */
+  stroke: currentColor;
+}

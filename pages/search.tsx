@@ -69,7 +69,7 @@ const SearchPage = () => {
             <p className="text-2xl font-bold">An unexpected error occurred!</p>
           </div>
         ) : (
-          <div className="flex mb-10 flex-wrap gap-2">
+          <div className="flex mb-10 flex-wrap gap-2 justify-center">
             {results.map((anime: any) => (
               <AnimeTile key={anime.id} anime={anime} />
             ))}

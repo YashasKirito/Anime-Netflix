@@ -10,10 +10,9 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^4.10.3",
-    "@tippyjs/react": "^4.2.6",
-    "artplayer": "^4.5.8",
     "axios": "^1.0.0",
     "classnames": "^2.3.2",
+    "daisyui": "^2.33.0",
     "dompurify": "^2.4.0",
     "firebase": "^9.11.0",
     "isomorphic-dompurify": "^0.22.0",
