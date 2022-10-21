@@ -46,12 +46,13 @@ const SearchPage = () => {
   }, []);
 
   return (
-    <div className="flex flex-col px-10 md:px-20 pt-20 h-screen w-full">
-      <section className="my-10 flex flex-col">
+    <div className="flex relative flex-col px-10 md:px-32 pt-20 min-h-screen bg-[url('/abstract-1.jpg')] bg-fixed bg-contain w-full">
+      <div className="fixed h-screen w-screen backdrop-blur-sm bg-black/10 top-0 left-0"></div>
+      <section className="my-10 flex flex-col z-10">
         <h1 className="font-bold text-4xl py-10">Search Anime</h1>
         <input
           defaultValue={router.query.query}
-          className="bg-slate-800 w-full text-lg p-5 px-10 rounded-full font-bold text-slate-300 outline-slate-600"
+          className="bg-black w-full text-lg p-5 px-10 rounded border-white/50 border-2 font-bold text-slate-300 outline-slate-600"
           type="text"
           placeholder="Search"
           onChange={(e) => debouncedSearch(e.target.value)}
