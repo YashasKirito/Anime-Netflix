@@ -68,7 +68,7 @@ const TopAiringPage = ({
                     textColor={textColor}
                     onClick={() => {}}
                   >
-                    Details
+                    Check it out!
                   </Button>
                 </Link>
               </div>
@@ -89,7 +89,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
       year: date.getFullYear(),
       status: "RELEASING",
       sort: ["POPULARITY_DESC"],
-      perPage: 50,
     },
   });
   return {
