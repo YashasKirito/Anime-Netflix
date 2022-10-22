@@ -8,7 +8,7 @@ import { TbPlayerSkipForward } from "react-icons/tb";
 import { BsCollectionPlay } from "react-icons/bs";
 import { MdSubtitles } from "react-icons/md";
 import { ImSpinner2 } from "react-icons/im";
-import {  useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { OnProgressProps } from "react-player/base";
 import cn from "classnames";
 
@@ -22,6 +22,7 @@ interface ICustomPlayer {
 }
 
 const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
+  console.log(url);
   const [playing, setPlaying] = useState(true);
   const [muted, setMuted] = useState(false);
   const [volume, setVolume] = useState(1);
@@ -255,12 +256,9 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
           )}
         />
         <ImSpinner2
-          className={cn(
-            "opacity-0 absolute animate-spin",
-            {
-              "opacity-100": isBuffering,
-            }
-          )}
+          className={cn("opacity-0 absolute animate-spin", {
+            "opacity-100": isBuffering,
+          })}
         />
         <GrForwardTen
           className={cn("skip opacity-0 duration-700 scale-125 transition", {

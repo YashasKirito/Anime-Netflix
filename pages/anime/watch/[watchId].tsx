@@ -52,12 +52,18 @@ const Player: NextPage = () => {
     );
   }
 
+  const getURL = () => {
+    const res = streamData.sources.find((s: any) => s.quality === "default");
+    if (res) {
+      return res.url;
+    } else {
+      return streamData.sources[streamData.sources.length - 1].url;
+    }
+  };
+
   return (
     <div className="h-screen w-screen">
-      <CustomPlayer
-        episodeTitle={`${router.query?.watchId}`}
-        url={streamData.sources.find((s: any) => s.quality === "default").url}
-      />
+      <CustomPlayer episodeTitle={`${router.query?.watchId}`} url={getURL()} />
     </div>
   );
 };
