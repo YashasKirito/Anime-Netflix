@@ -22,7 +22,6 @@ interface ICustomPlayer {
 }
 
 const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
-  console.log(url);
   const [playing, setPlaying] = useState(true);
   const [muted, setMuted] = useState(false);
   const [volume, setVolume] = useState(1);
@@ -121,7 +120,6 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
   };
 
   const onVideoBuffer = () => {
-    console.log("onVideoBuffer");
     setIsBuffering(true);
   };
 
@@ -151,11 +149,9 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
 
   const onVideoDuration = (duration: any) => {
     updateDuration(duration);
-    console.log("Video duration: ", duration);
   };
 
   const onVideoBufferEnd = () => {
-    console.log("Video buffer end: ");
     setIsBuffering(false);
   };
 
@@ -167,7 +163,7 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
   const handleTimelineUpdate = (event: any) => {
     const rect = timelineRef.current.getBoundingClientRect();
     const percentage =
-      Math.min(Math.max(event.screenX - rect.x), rect.width) / rect.width;
+      Math.min(Math.max(0, event.clientX - rect.x), rect.width) / rect.width;
     setTimelineSeekPreview(percentage);
   };
 
