@@ -7,6 +7,24 @@
   font-size: 1.125vmax;
 }
 
+@media only screen and (max-width: 1100px) {
+  :root {
+    font-size: 1.25vmax;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  :root {
+    font-size: 1.75vmax;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  :root {
+    font-size: 1.5vmax;
+  }
+}
+
 .react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar {
   display: none;
 }

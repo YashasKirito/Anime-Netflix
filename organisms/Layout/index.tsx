@@ -30,7 +30,11 @@ const Layout: React.FC<ILayout> = ({ children }) => {
   }, []);
 
   return (
-    <div onClick={setUserInteraction} className="font-Montserrat">
+    <div
+      data-theme="mytheme"
+      onClick={setUserInteraction}
+      className="font-Montserrat"
+    >
       <Head>
         <title>AniClub</title>
         <meta name="description" content="Netflix for Anime: Ad Free" />
