@@ -8,7 +8,7 @@ import { TbPlayerSkipForward } from "react-icons/tb";
 import { BsCollectionPlay } from "react-icons/bs";
 import { MdSubtitles } from "react-icons/md";
 import { ImSpinner2 } from "react-icons/im";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { OnProgressProps } from "react-player/base";
 import cn from "classnames";
 
@@ -41,6 +41,35 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
   const timelineRef = useRef<any>();
   const mouseHideRef = useRef<any>();
 
+  useEffect(() => {
+    const handleKeyBoardEvents = (event: KeyboardEvent) => {
+      switch (event.key.toLowerCase()) {
+        case " ":
+        case "k":
+          playPause();
+          break;
+        case "m":
+          toggleMute();
+          break;
+        case "arrowleft":
+          seek10Backward();
+          break;
+        case "arrowright":
+          seek10Forward();
+          break;
+        case "f":
+          toggleFullscreen();
+          break;
+        default:
+          return;
+      }
+    };
+    window.addEventListener("keydown", handleKeyBoardEvents);
+    return () => {
+      window.removeEventListener("keydown", handleKeyBoardEvents);
+    };
+  }, []);
+
   const playPause = () => {
     setPlaying((prev) => !prev);
   };
@@ -52,7 +81,9 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
     } else {
       setVolume(volumeRef.current);
     }
-    setMuted((prev) => !prev);
+    setMuted((prev) => {
+      return !prev;
+    });
   };
 
   const changeVolume = (value: number) => {
