@@ -2,18 +2,20 @@ import { useAuthStore } from "Auth";
 import { Unsubscribe } from "firebase/auth";
 import { collection, onSnapshot, query } from "firebase/firestore";
 import { useEffect } from "react";
-import { useMyListStore } from "store/MyListStore";
+import { useContinueWatchingStore } from "store/ContinueWatchStore";
 import { db } from "..";
 
-const MyListWrapper: React.FC<{ children: React.ReactNode }> = ({
+const ContinueWatchingWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const user = useAuthStore((state) => state.user);
-  const [setList] = useMyListStore((state) => [state.setList]);
+  const [setList] = useContinueWatchingStore((state) => [state.setList]);
   useEffect(() => {
     let unSub: Unsubscribe;
     if (user) {
-      const q = query(collection(db, "mylist", `${user.email}`, "watch-list"));
+      const q = query(
+        collection(db, "mylist", `${user.email}`, "continue-watching")
+      );
       unSub = onSnapshot(q, (querySnapshot) => {
         const list: any = {};
         querySnapshot.forEach((doc) => {
@@ -29,4 +31,4 @@ const MyListWrapper: React.FC<{ children: React.ReactNode }> = ({
   return <>{children}</>;
 };
 
-export default MyListWrapper;
+export default ContinueWatchingWrapper;

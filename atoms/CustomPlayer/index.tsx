@@ -14,6 +14,7 @@ import cn from "classnames";
 import { memo } from "react";
 import { useCurrentlyWatchingStore } from "store/useCurrentlyWatching";
 import { useRouter } from "next/router";
+import { addItemTContinueWatchingFireStore } from "../../firebase/ContinueWatching/helpers";
 
 const VideoPlayer = dynamic(() => import("./VideoPlayer"), {
   ssr: false,
@@ -43,6 +44,7 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url }) => {
   const volumeRef = useRef<any>();
   const timelineRef = useRef<any>();
   const mouseHideRef = useRef<any>();
+  const progressRef = useRef<any>();
 
   // CurrentlyWatchingState
   const [animeTitle, episodeTitle, episodeNumber, episodeList, setAnimeData] =
@@ -80,6 +82,14 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url }) => {
     window.addEventListener("keydown", handleKeyBoardEvents);
     return () => {
       window.removeEventListener("keydown", handleKeyBoardEvents);
+      episodeList &&
+        progressRef.current &&
+        animeTitle &&
+        addItemTContinueWatchingFireStore({
+          animeTitle: animeTitle,
+          episode: episodeList[episodeNumber! - 1],
+          progress: progressRef.current,
+        });
     };
   }, []);
 
@@ -169,6 +179,7 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url }) => {
 
   const onVideoProgress = (event: OnProgressProps) => {
     setProgress(event.played);
+    progressRef.current = event.played;
     setBuffer(event.loaded);
     const duration = videoRef.current.getDuration();
     updateDuration(duration - event.playedSeconds);

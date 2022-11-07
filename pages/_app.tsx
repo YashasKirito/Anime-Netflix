@@ -6,6 +6,7 @@ import Layout from "organisms/Layout";
 import AuthProvider from "Auth/AuthProvider";
 import MyListWrapper from "../firebase/MyListFireStore/MyListWrapper";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ContinueWatchingWrapper from "../firebase/ContinueWatching/ContinueWatchingWrapper";
 
 const queryClient = new QueryClient();
 
@@ -15,9 +16,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <MyListWrapper>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <ContinueWatchingWrapper>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </ContinueWatchingWrapper>
           </MyListWrapper>
         </AuthProvider>
       </QueryClientProvider>

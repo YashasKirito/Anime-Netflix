@@ -1,9 +1,10 @@
 import create from "zustand";
 
-type episodeType = {
+export type episodeType = {
   id: string;
   title: string;
   number: number;
+  image: string;
 };
 
 interface CurrentlyWatchingState {
