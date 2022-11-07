@@ -11,6 +11,7 @@ import { ImSpinner2 } from "react-icons/im";
 import { useEffect, useRef, useState } from "react";
 import { OnProgressProps } from "react-player/base";
 import cn from "classnames";
+import { memo } from "react";
 
 const VideoPlayer = dynamic(() => import("./VideoPlayer"), {
   ssr: false,
@@ -167,11 +168,15 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
     const hrs = Math.floor(duration / 3600);
     let str = "";
     if (hrs === 0) {
-      str = `${mins}:${seconds.toLocaleString(undefined, {
+      str = `${mins.toLocaleString(undefined, {
+        minimumIntegerDigits: 2,
+      })}:${seconds.toLocaleString(undefined, {
         minimumIntegerDigits: 2,
       })}`;
     } else {
-      str = `${hrs}:${mins}:${seconds.toLocaleString(undefined, {
+      str = `${hrs}:${mins.toLocaleString(undefined, {
+        minimumIntegerDigits: 2,
+      })}:${seconds.toLocaleString(undefined, {
         minimumIntegerDigits: 2,
       })}`;
     }
@@ -416,4 +421,4 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
   );
 };
 
-export default CustomPlayer;
+export default memo(CustomPlayer);

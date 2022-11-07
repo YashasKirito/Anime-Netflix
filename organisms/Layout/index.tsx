@@ -31,8 +31,8 @@ const Layout: React.FC<ILayout> = ({ children }) => {
 
   return (
     <div
-      data-theme="mytheme"
-      onClick={setUserInteraction}
+      data-theme="black"
+      // onClick={setUserInteraction}
       className="font-Montserrat"
     >
       <Head>

@@ -22,7 +22,7 @@ const Button: React.FC<IButton> = ({
   return (
     <button
       className={cn(
-        "p-2 px-4 md:px-6 text-xs md:text-base flex items-center font-bold justify-center w-fit rounded-md gap-2 disabled:opacity-50 disabled:cursor-not-allowed active:outline outline-2 outline-offset-2 outline-slate-500 transition hover:brightness-50",
+        "p-2 px-4 md:px-6 text-xs md:text-base flex items-center active:scale-95 font-bold justify-center w-fit rounded-md gap-2 disabled:opacity-50 disabled:cursor-not-allowed active:outline outline-2 outline-offset-2 outline-slate-500 transition hover:brightness-50",
         {
           "text-black": type === "primary",
           "text-white": type === "secondary",
