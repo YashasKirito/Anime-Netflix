@@ -38,7 +38,7 @@ const AnimePage: NextPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
   const continueWatching = useContinueWatchingStore(
-    (state) => state.myList[animeData.title.romaji]
+    (state) => state.myList[animeData?.title.romaji]
   );
 
   const [setEpisodeList, setAnimeData] = useCurrentlyWatchingStore((state) => [
