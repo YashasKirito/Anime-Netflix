@@ -53,7 +53,9 @@ const Player: NextPage = () => {
   }
 
   const getURL = () => {
-    const res = streamData.sources.find((s: any) => s.quality === "default");
+    const res = streamData.sources.find(
+      (s: any) => s.quality === "default" || s.quality === "auto"
+    );
     if (res) {
       return res.url;
     } else {
@@ -63,7 +65,7 @@ const Player: NextPage = () => {
 
   return (
     <div className="h-screen w-screen">
-      <CustomPlayer episodeTitle={`${router.query?.watchId}`} url={getURL()} />
+      <CustomPlayer url={getURL()} />
     </div>
   );
 };

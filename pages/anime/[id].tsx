@@ -30,11 +30,16 @@ import { useAuthStore } from "Auth";
 import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames";
 import AnimeTile from "@molecules/AnimeTile";
+import { useCurrentlyWatchingStore } from "store/useCurrentlyWatching";
 
 const AnimePage: NextPage = ({
   animeData,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
+  const [setEpisodeList, setAnimeData] = useCurrentlyWatchingStore((state) => [
+    state.setEpisodesList,
+    state.setAnimeData,
+  ]);
   const {
     isLoading,
     error,
@@ -44,6 +49,9 @@ const AnimePage: NextPage = ({
       process.env.NEXT_PUBLIC_BASE_URL + urls.getEpisodes + router.query?.id ||
         ""
     );
+    if (res.status === 200) {
+      setEpisodeList(res.data);
+    }
     return res.data;
   });
   // Episodes Pagination
@@ -75,6 +83,14 @@ const AnimePage: NextPage = ({
   const handlePageClick = (event: { selected: number }) => {
     const newOffset = (event.selected * itemsPerPage) % (episodes?.length || 0);
     setItemOffset(newOffset);
+  };
+
+  const handleSetAnimeData = (
+    animeTitle: string,
+    episodeTitle: string,
+    episodeNumber: number
+  ) => {
+    setAnimeData(animeTitle, episodeTitle, episodeNumber);
   };
 
   if (router.isFallback) {
@@ -307,7 +323,16 @@ const AnimePage: NextPage = ({
               {(currentItems || []).map((ep: any) => {
                 return (
                   <Link key={ep.id} href={`/anime/watch/${ep.id}`}>
-                    <a className="flex items-center gap-6 p-4 cursor-pointer rounded-md hover:bg-gray-700">
+                    <a
+                      onClick={() =>
+                        handleSetAnimeData(
+                          animeData.title.romaji,
+                          ep.title,
+                          ep.number
+                        )
+                      }
+                      className="flex items-center gap-6 p-4 cursor-pointer rounded-md hover:bg-gray-700"
+                    >
                       <span className="text-2xl">{ep.number}</span>
                       <img
                         className="w-40 aspect-video object-cover flex-shrink-0"

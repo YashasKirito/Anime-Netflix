@@ -12,6 +12,8 @@ import { useEffect, useRef, useState } from "react";
 import { OnProgressProps } from "react-player/base";
 import cn from "classnames";
 import { memo } from "react";
+import { useCurrentlyWatchingStore } from "store/useCurrentlyWatching";
+import { useRouter } from "next/router";
 
 const VideoPlayer = dynamic(() => import("./VideoPlayer"), {
   ssr: false,
@@ -19,10 +21,10 @@ const VideoPlayer = dynamic(() => import("./VideoPlayer"), {
 
 interface ICustomPlayer {
   url: string;
-  episodeTitle: string;
 }
 
-const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
+const CustomPlayer: React.FC<ICustomPlayer> = ({ url }) => {
+  const router = useRouter();
   const [playing, setPlaying] = useState(true);
   const [muted, setMuted] = useState(false);
   const [volume, setVolume] = useState(1);
@@ -41,6 +43,16 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
   const volumeRef = useRef<any>();
   const timelineRef = useRef<any>();
   const mouseHideRef = useRef<any>();
+
+  // CurrentlyWatchingState
+  const [animeTitle, episodeTitle, episodeNumber, episodeList, setAnimeData] =
+    useCurrentlyWatchingStore((state) => [
+      state.animeTitle,
+      state.episodeTitle,
+      state.episodeNumber,
+      state.episodeList,
+      state.setAnimeData,
+    ]);
 
   useEffect(() => {
     const handleKeyBoardEvents = (event: KeyboardEvent) => {
@@ -236,6 +248,14 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
     }
   };
 
+  const handleNextEpisode = () => {
+    if (!episodeList || !episodeNumber) return;
+    if (episodeNumber >= episodeList.length) return; // no more episodes
+    const nextEpisode = episodeList[episodeNumber];
+    setAnimeData(animeTitle!, nextEpisode.title, nextEpisode.number);
+    router.replace(`/anime/watch/${nextEpisode.id}`);
+  };
+
   return (
     <div
       ref={videoContainer}
@@ -355,7 +375,7 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
           >
             <GrForwardTen className="skip" />
           </button>
-          <div className="dropdown dropdown-top dropdown-hover">
+          <div className="dropdown dropdown-top dropdown-hover flex items-center">
             <div tabIndex={0} className="flex items-center">
               <button
                 disabled={playerControlsDisabled}
@@ -381,10 +401,18 @@ const CustomPlayer: React.FC<ICustomPlayer> = ({ url, episodeTitle }) => {
             </div>
           </div>
 
-          <div className="flex-1 text-center text-sm select-none truncate px-10">
-            {episodeTitle}
+          <div className="flex-grow text-center select-none px-10 flex flex-col">
+            <span className="font-bold text-sm truncate">{episodeTitle}</span>
+            <span className="text-sm truncate">
+              {animeTitle}
+              {" - "}
+              {episodeNumber?.toLocaleString(undefined, {
+                minimumIntegerDigits: 2,
+              })}
+            </span>
           </div>
           <button
+            onClick={handleNextEpisode}
             disabled={playerControlsDisabled}
             className="hover:scale-125 transition-transform"
           >

@@ -1,10 +1,15 @@
 import Button from "@atoms/Button";
 import AnimeTile from "@molecules/AnimeTile";
 import classNames from "classnames";
+import Link from "next/link";
 import { FaPlay } from "react-icons/fa";
+import { useCurrentlyWatchingStore } from "store/useCurrentlyWatching";
 import { pickTextColorBasedOnBgColorAdvanced } from "utils/getContrastColor";
 
 const RecentAnimeTime = ({ anime }: any) => {
+  const [setAnimeData] = useCurrentlyWatchingStore((state) => [
+    state.setAnimeData,
+  ]);
   const color = (anime.color || "#ffffff") as string;
   const textColor = pickTextColorBasedOnBgColorAdvanced(
     color,
@@ -49,14 +54,22 @@ const RecentAnimeTime = ({ anime }: any) => {
             </span>
             <span className="text-sm font-bold">{anime.episodeTitle}</span>
           </p>
-          <Button
-            onClick={() => {}}
-            type="custom"
-            color={color}
-            textColor={textColor}
-          >
-            <FaPlay className="w-5 h-5" /> Watch Now!
-          </Button>
+          <Link passHref href={`/anime/watch/${anime.episodeId}`}>
+            <Button
+              onClick={() => {
+                setAnimeData(
+                  anime.title.romaji,
+                  anime.episodeTitle,
+                  anime.episodeNumber
+                );
+              }}
+              type="custom"
+              color={color}
+              textColor={textColor}
+            >
+              <FaPlay className="w-5 h-5" /> Watch Now!
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
