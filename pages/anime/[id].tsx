@@ -31,11 +31,16 @@ import { useQuery } from "@tanstack/react-query";
 import classNames from "classnames";
 import AnimeTile from "@molecules/AnimeTile";
 import { useCurrentlyWatchingStore } from "store/useCurrentlyWatching";
+import { useContinueWatchingStore } from "store/ContinueWatchStore";
 
 const AnimePage: NextPage = ({
   animeData,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
+  const continueWatching = useContinueWatchingStore(
+    (state) => state.myList[animeData.title.romaji]
+  );
+
   const [setEpisodeList, setAnimeData] = useCurrentlyWatchingStore((state) => [
     state.setEpisodesList,
     state.setAnimeData,
@@ -123,11 +128,44 @@ const AnimePage: NextPage = ({
             <p className="font-bold text-4xl">{animeData.title.romaji}</p>
             <div className="actions | flex gap-2">
               {!isLoading && episodes && episodes.length > 0 ? (
-                <Link href={`/anime/watch/${episodes[0]?.id}`} passHref>
-                  <Button type="primary" onClick={() => {}}>
-                    <FaPlay className="w-5 h-5" /> Play
-                  </Button>
-                </Link>
+                continueWatching ? (
+                  <Link
+                    href={`/anime/watch/${continueWatching.episode.id}`}
+                    passHref
+                  >
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        handleSetAnimeData(
+                          animeData.title.romaji,
+                          continueWatching.episode.title,
+                          continueWatching.episode.number
+                        );
+                      }}
+                    >
+                      <FaPlay className="w-5 h-5" /> Continue Episode:{" "}
+                      {continueWatching.episode.number.toLocaleString(
+                        undefined,
+                        { minimumIntegerDigits: 2 }
+                      )}
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href={`/anime/watch/${episodes[0]?.id}`} passHref>
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        handleSetAnimeData(
+                          animeData.title.romaji,
+                          episodes[0]?.title,
+                          1
+                        );
+                      }}
+                    >
+                      <FaPlay className="w-5 h-5" /> Play
+                    </Button>
+                  </Link>
+                )
               ) : (
                 <Button disabled type="primary" onClick={() => {}}>
                   <FaPlay className="w-5 h-5" /> Play
