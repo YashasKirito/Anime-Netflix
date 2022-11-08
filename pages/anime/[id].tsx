@@ -285,12 +285,12 @@ const AnimePage: NextPage = ({
                     {animeData.status}
                   </div>
                 </div>
-                <div className="font-bold text-xl ">
-                  <span className="mr-2">Next Episode in{"    "}</span>
+                {countDown ? <div className="font-bold text-xl ">
+                  <span className="mr-2">Next Episode in</span>
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
                     {getTimeTillNextEpisode()}
                   </span>
-                </div>
+                </div> : null}
                 <div
                   // className="whitespace-pre-line"
                   dangerouslySetInnerHTML={{
