@@ -32,6 +32,7 @@ import classNames from "classnames";
 import AnimeTile from "@molecules/AnimeTile";
 import { useCurrentlyWatchingStore } from "store/useCurrentlyWatching";
 import { useContinueWatchingStore } from "store/ContinueWatchStore";
+import { toDaysMinutesSeconds } from "utils/secondsToDaysHoursMins";
 
 const AnimePage: NextPage = ({
   animeData,
@@ -67,6 +68,7 @@ const AnimePage: NextPage = ({
   // following the API or data you're working with.
   const [itemOffset, setItemOffset] = useState(0);
   const [tabIndex, setTabIndex] = useState(0);
+  const [countDown, setCountDown] = useState(0);
   const myList = useMyListStore((state) => state.myList);
   const user = useAuthStore((state) => state.user);
   const itemsPerPage = 10;
@@ -84,6 +86,20 @@ const AnimePage: NextPage = ({
     }
   }, [itemOffset, itemsPerPage, animeData, episodes, router]);
 
+  useEffect(() => {
+    let interval: NodeJS.Timer;
+    let seconds = animeData?.nextAiringEpisode?.timeUntilAiring;
+    if (seconds) {
+      setCountDown(seconds);
+      interval = setInterval(() => {
+        setCountDown((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [animeData?.nextAiringEpisode?.timeUntilAiring]);
+
   // Invoke when user click to request another page.
   const handlePageClick = (event: { selected: number }) => {
     const newOffset = (event.selected * itemsPerPage) % (episodes?.length || 0);
@@ -96,6 +112,12 @@ const AnimePage: NextPage = ({
     episodeNumber: number
   ) => {
     setAnimeData(animeTitle, episodeTitle, episodeNumber);
+  };
+
+  const getTimeTillNextEpisode = () => {
+    if (!countDown) return null;
+
+    return toDaysMinutesSeconds(countDown);
   };
 
   if (router.isFallback) {
@@ -262,6 +284,12 @@ const AnimePage: NextPage = ({
                   >
                     {animeData.status}
                   </div>
+                </div>
+                <div className="font-bold text-xl ">
+                  <span className="mr-2">Next Episode in{"    "}</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-violet-500">
+                    {getTimeTillNextEpisode()}
+                  </span>
                 </div>
                 <div
                   // className="whitespace-pre-line"
