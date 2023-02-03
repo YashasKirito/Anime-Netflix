@@ -86,7 +86,7 @@ const Player: NextPage = () => {
       <NetPlayer
         sources={sources}
         subtitles={subs}
-        thumbnail={thumbnails.url}
+        thumbnail={thumbnails?.url}
       />
     </div>
   );

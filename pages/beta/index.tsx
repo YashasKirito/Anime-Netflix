@@ -24,7 +24,7 @@ const MediaHome = ({
   trending: ITrendingData[];
   recentMovies: ITrendingData[];
   recentShows: ITrendingData[];
-  }) => {
+}) => {
   const router = useRouter();
   const [search, setSearch] = useState("");
 
@@ -38,7 +38,7 @@ const MediaHome = ({
   const goToMediaPage = (id: string) => {
     const safeId = encodeURIComponent(id);
     router.push("/beta/" + safeId);
-  }
+  };
 
   return (
     <main className="p-[5vmax] flex flex-col gap-10">
@@ -50,14 +50,15 @@ const MediaHome = ({
         onChange={(e) => setSearch(e.target.value)}
       />
       <section>
-        {isLoading && <div className="text-center">Loading</div>}
-        {error && (
+        {isLoading ? <div className="text-center">Loading</div> : null}
+        {error ? (
           <div className="text-center">Error: {JSON.stringify(error)}</div>
-        )}
-        {data && (
+        ) : null}
+        {data ? (
           <div className="flex flex-wrap gap-4">
             {data.map((d) => (
               <div
+                key={d.id}
                 className="w-48 rounded-md cursor-pointer flex flex-col"
                 onClick={() => goToMediaPage(d.id)}
               >
@@ -70,7 +71,7 @@ const MediaHome = ({
               </div>
             ))}
           </div>
-        )}
+        ) : null}
       </section>
       <section className="Trending | flex flex-col gap-2">
         <div className="overflow-scroll">
@@ -80,6 +81,7 @@ const MediaHome = ({
             {trending.map((tren) => {
               return (
                 <div
+                  key={tren.id}
                   className="w-48 rounded-md cursor-pointer"
                   onClick={() => goToMediaPage(tren.id)}
                 >
@@ -105,6 +107,7 @@ const MediaHome = ({
             {recentMovies.map((rm) => {
               return (
                 <div
+                  key={rm.id}
                   className="w-48 rounded-md cursor-pointer"
                   onClick={() => goToMediaPage(rm.id)}
                 >
@@ -130,6 +133,7 @@ const MediaHome = ({
             {recentShows.map((rs) => {
               return (
                 <div
+                  key={rs.id}
                   className="w-48 rounded-md cursor-pointer "
                   onClick={() => goToMediaPage(rs.id)}
                 >

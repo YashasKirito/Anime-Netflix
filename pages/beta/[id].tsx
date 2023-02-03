@@ -48,7 +48,7 @@ const AnimePage: NextPage = ({
       <section className="px-5 md:px-20 -translate-y-32">
         <div className="flex gap-8">
           <img
-            className="w-44 h-60 rounded shadow-lg shadow-stone-800"
+            className="w-44 rounded shadow-lg shadow-stone-800"
             src={CORS_BYPASS + data.image}
             alt={data.title}
           />
@@ -83,6 +83,7 @@ const AnimePage: NextPage = ({
               data.episodes.map((episode: any) => {
                 return (
                   <div
+                    key={episode.id}
                     className="flex flex-col gap-2 p-5 bg-slate-800 cursor-pointer"
                     onClick={() => playMovie(episode.id)}
                   >
