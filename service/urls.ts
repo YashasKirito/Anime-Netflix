@@ -10,3 +10,14 @@ export const urls = {
   top: "meta/anilist/popular",
   topAiring: `meta/anilist/advanced-search?year=2022&status=RELEASING&sort=["POPULARITY_DESC"]`,
 };
+
+export const CORS_BYPASS = "https://cors.consumet.stream/";
+
+export const FlixHQEndpoints = {
+  base: "movies/flixhq/",
+  info: "movies/flixhq/info",
+  trending: "movies/flixhq/trending",
+  recentShows: "movies/flixhq/recent-shows",
+  recentMovies: "movies/flixhq/recent-movies",
+  watch: "movies/flixhq/watch",
+};
