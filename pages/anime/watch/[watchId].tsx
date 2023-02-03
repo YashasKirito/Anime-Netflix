@@ -4,7 +4,11 @@ import axios from "axios";
 
 import { useRouter } from "next/router";
 import { useQuery } from "@tanstack/react-query";
-import CustomPlayer from "@atoms/CustomPlayer";
+import dynamic from "next/dynamic";
+
+const NetPlayer = dynamic(() => import("netplayer"), {
+  ssr: false,
+});
 
 const Player: NextPage = () => {
   const router = useRouter();
@@ -52,20 +56,13 @@ const Player: NextPage = () => {
     );
   }
 
-  const getURL = () => {
-    const res = streamData.sources.find(
-      (s: any) => s.quality === "default" || s.quality === "auto"
-    );
-    if (res) {
-      return res.url;
-    } else {
-      return streamData.sources[streamData.sources.length - 1].url;
-    }
-  };
+  const sources = streamData.sources.map((s: any) => {
+    return { file: s.url, label: s.quality };
+  });
 
   return (
     <div className="h-screen w-screen">
-      <CustomPlayer url={getURL()} />
+      <NetPlayer sources={sources} />
     </div>
   );
 };
