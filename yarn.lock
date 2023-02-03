@@ -720,6 +720,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@plussub/srt-vtt-parser@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@plussub/srt-vtt-parser/-/srt-vtt-parser-1.1.0.tgz#5a5d2103c130177a3cde515cd4b75097737f1a21"
+  integrity sha512-wDhuvXmTC6E9lxbwX/ashWpvFTH2v5MRT6LqTlGC6+fmragETMzcCubaEiVWWiNVT+HexKe2F6s421OFmfrjiw==
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -2466,6 +2471,11 @@ load-script@^1.0.0:
   resolved "https://registry.yarnpkg.com/load-script/-/load-script-1.0.0.tgz#0491939e0bee5643ee494a7e3da3d2bac70c6ca4"
   integrity sha512-kPEjMFtZvwL9TaZo0uZ2ml+Ye9HUMmPwbYRJ324qF9tqMejwykJ5ggTyvzmrbBeapCAbk98BSbTeovHEEP1uCA==
 
+load-script@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/load-script/-/load-script-2.0.0.tgz#40821aaa59e9bbe7be2e28b6ab053e6f44330fa1"
+  integrity sha512-km6cyoPW4rM22JMGb+SHUKPMZVDpUaMpMAKrv8UHWllIxc/qjgMGHD91nY+5hM+/NFs310OZ2pqQeJKs7HqWPA==
+
 locate-path@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-6.0.0.tgz#55321eb309febbc59c4801d931a72452a681d286"
@@ -2578,6 +2588,15 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
+
+netplayer@^1.4.11:
+  version "1.4.11"
+  resolved "https://registry.yarnpkg.com/netplayer/-/netplayer-1.4.11.tgz#6a61d691a05354d2329c063e52b8cc4b8055c89e"
+  integrity sha512-XqCUIVPI+/tLlAORN2uM4axXL8KUj0UhUGwW+/GwbCd3x9FuZ04h9h7rqDoVg2/iE7cRwiHxjiWgC9rOJdq5cg==
+  dependencies:
+    "@plussub/srt-vtt-parser" "^1.1.0"
+    load-script "^2.0.0"
+    url-toolkit "^2.2.5"
 
 next@12.3.1:
   version "12.3.1"
@@ -3581,6 +3600,11 @@ url-parse@^1.5.3:
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
+
+url-toolkit@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/url-toolkit/-/url-toolkit-2.2.5.tgz#58406b18e12c58803e14624df5e374f638b0f607"
+  integrity sha512-mtN6xk+Nac+oyJ/PrI7tzfmomRVNFIWKUbG8jdYFt52hxbiReFAXIjYskvu64/dvuW71IcB7lV8l0HvZMac6Jg==
 
 use-isomorphic-layout-effect@^1.1.2:
   version "1.1.2"
