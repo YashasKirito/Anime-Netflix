@@ -9,11 +9,14 @@ interface ILayout {
   children: React.ReactNode;
 }
 
+const v2HeaderPages = ['/beta']
+
 const Layout: React.FC<ILayout> = ({ children }) => {
   const router = useRouter();
   const setMuted = useMutedStore((state) => state.setMuted);
 
   const isWatchRoute = router.asPath.includes("watch");
+  const useHeaderV2 = router.asPath.includes("beta");
 
   const setUserInteraction = () => {
     const interaction = localStorage.getItem("userInteraction");
@@ -40,7 +43,7 @@ const Layout: React.FC<ILayout> = ({ children }) => {
         <meta name="description" content="Netflix for Anime: Ad Free" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header isWatchRoute={isWatchRoute} />
+      {!useHeaderV2 && <Header isWatchRoute={isWatchRoute} />}
       <div>{children}</div>
     </div>
   );
