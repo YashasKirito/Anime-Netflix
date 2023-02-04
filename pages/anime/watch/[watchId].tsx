@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 const NetPlayer = dynamic(() => import("netplayer"), {
   ssr: false,
 });
+const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 
 const Player: NextPage = () => {
   const router = useRouter();
@@ -16,13 +17,19 @@ const Player: NextPage = () => {
     isLoading,
     error,
     data: streamData,
-  } = useQuery(["episode", router.query?.watchId], async () => {
-    const res = await axios.get(
-      process.env.NEXT_PUBLIC_BASE_URL + urls.watch + router.query?.watchId ||
-        ""
-    );
-    return res.data;
-  });
+  } = useQuery(
+    ["episode", router.query?.watchId],
+    async () => {
+      const res = await axios.get(
+        process.env.NEXT_PUBLIC_BASE_URL + urls.watch + router.query?.watchId ||
+          ""
+      );
+      return res.data;
+    },
+    {
+      staleTime: twentyFourHoursInMs,
+    }
+  );
 
   if (error) {
     return (

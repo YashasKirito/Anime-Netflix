@@ -10,6 +10,8 @@ const NetPlayer = dynamic(() => import("netplayer"), {
   ssr: false,
 });
 
+const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
+
 const Player: NextPage = () => {
   const router = useRouter();
   const {
@@ -29,6 +31,9 @@ const Player: NextPage = () => {
         }
       );
       return res.data;
+    },
+    {
+      staleTime: twentyFourHoursInMs,
     }
   );
 
@@ -68,15 +73,16 @@ const Player: NextPage = () => {
     return { file: s.url, label: s.quality };
   });
 
-  const subs = (streamData.subtitles as []).filter((s: any) =>
-    !s.url.includes("thumbnails")
-  ).map((s: any) => { return {
-    lang: s.lang,
-    language: s.lang,
-    file: s.url,
-  };
-  });
-  
+  const subs = (streamData.subtitles as [])
+    .filter((s: any) => !s.url.includes("thumbnails"))
+    .map((s: any) => {
+      return {
+        lang: s.lang,
+        language: s.lang,
+        file: s.url,
+      };
+    });
+
   const thumbnails = streamData.subtitles.find((s: any) =>
     s.url.includes("thumbnails")
   );
