@@ -11,7 +11,8 @@ export const urls = {
   topAiring: `meta/anilist/advanced-search?year=2022&status=RELEASING&sort=["POPULARITY_DESC"]`,
 };
 
-export const CORS_BYPASS = "https://cors.consumet.stream/";
+export const CORS_BYPASS = "https://corsproxy.io/?";
+export const M3U8_BYPASS = "https://mym3u8.proxy.com/m3u8_proxy?url="
 
 export const FlixHQEndpoints = {
   base: "movies/flixhq/",
