@@ -12,6 +12,16 @@ const NetPlayer = dynamic(() => import("netplayer"), {
 
 const twentyFourHoursInMs = 1000 * 60 * 60 * 24;
 
+const constructStreamUrl = (url: string, headers: object) => {
+  return (
+    process.env.NEXT_PUBLIC_M3U8_PROXY +
+    "?url=" +
+    url +
+    "&headers=" +
+    JSON.stringify(headers)
+  );
+};
+
 const Player: NextPage = () => {
   const router = useRouter();
   const {
@@ -22,18 +32,15 @@ const Player: NextPage = () => {
     ["episode", router.query?.watchId, router.query?.episodeId],
     async () => {
       const res = await axios.get(
-        process.env.NEXT_PUBLIC_BASE_URL + FlixHQEndpoints.watch,
-        {
-          params: {
-            episodeId: router.query?.episodeId,
-            mediaId: router.query?.watchId,
-          },
-        }
+        "https://api.consumet.org/meta/tmdb/watch/" +
+          router.query?.episodeId +
+          "?id=" +
+          router.query?.watchId
       );
       return res.data;
     },
     {
-      staleTime: twentyFourHoursInMs,
+      staleTime: Infinity,
     }
   );
 
@@ -70,7 +77,10 @@ const Player: NextPage = () => {
   }
 
   const sources = streamData.sources.map((s: any) => {
-    return { file: s.url, label: s.quality };
+    return {
+      file: s.url,
+      label: s.quality,
+    };
   });
 
   const subs = (streamData.subtitles as [])
